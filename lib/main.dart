@@ -19,8 +19,17 @@ class MyApp extends StatelessWidget{
   }
 }
 
-class BlogClubPage extends StatelessWidget{
-  const BlogClubPage({super.key});
+class BlogClubPage extends StatefulWidget{
+  const BlogClubPage ({super.key});
+
+  @override
+  _BlogClubPageState createState() => _BlogClubPageState();
+}
+
+class _BlogClubPageState extends State<BlogClubPage>{
+  _BlogClubPageState();
+
+  double sheetOpacity = 0.0;
 
   @override
   Widget build(BuildContext context){
@@ -77,19 +86,26 @@ class BlogClubPage extends StatelessWidget{
             minChildSize: 0.1,
             maxChildSize: 0.8,
             builder: (context, scrollController) {
-              return Container(
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
+                decoration:  BoxDecoration(
+                  color: const Color.fromARGB(255,56, 106, 237).withOpacity(sheetOpacity),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                 ),
+                child: NotificationListener<DraggableScrollableNotification>(
+                  onNotification: (notification) {
+                    setState(() {
+                      if(notification.extent <= 0.1){
+                        sheetOpacity = 0.0;
+                      } else if(notification.extent >= 0.8){
+                        sheetOpacity = 1.0;
+                      } else {
+                        sheetOpacity = notification.extent;
+                      }
+                    });
+                    return true;
+                  },
                 child: ListView(
                   controller: scrollController,
                   children: [
@@ -125,6 +141,7 @@ class BlogClubPage extends StatelessWidget{
                     ),
                   ],
                 ),
+              ),
               );
             },
           )
