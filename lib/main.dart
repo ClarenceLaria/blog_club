@@ -87,8 +87,10 @@ class _BlogClubPageState extends State<BlogClubPage>{
           SlidingUpPanel(
             controller: _panelController,
             minHeight: 50,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
             panel: Column(
               children: [
+                const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.max,
@@ -100,21 +102,26 @@ class _BlogClubPageState extends State<BlogClubPage>{
                     });
                     _panelController.open();
                   }, 
-                  child: const Text('LOGIN', style: TextStyle(color: Colors.white),),
+                  child: const Text('LOGIN', style: TextStyle(color: Colors.white, fontSize: 18),),
                   ),
                   TextButton(onPressed: () {
                     setState(() {
                       selectedTab = 'Sign-up';
                     });
                     _panelController.open();
-                  }, 
-                  child: const Text('SIGN UP', style: TextStyle(color: Colors.white),),
+                  },
+                  child: const Text('SIGN UP', style: TextStyle(color: Colors.white, fontSize: 18),),
                   ),
                 ],
                 ),
+                const SizedBox(height: 10,),
                 Expanded(
-                  child: ListView(
-                    children: selectedTab == 'Login' ? _buildLoginFields() : _buildSignUpFields(),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0))        
+                    ),
+                    child: selectedTab == 'Login' ? Column(children: _buildLoginFields()) : Column(children: _buildSignUpFields()),
                   ),
                 ),
               ],
