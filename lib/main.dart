@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +31,8 @@ class _BlogClubPageState extends State<BlogClubPage>{
   _BlogClubPageState();
 
   double sheetOpacity = 0.0;
+  String selectedTab = 'Login';
+  final PanelController _panelController = PanelController();
 
   @override
   Widget build(BuildContext context){
@@ -81,72 +84,102 @@ class _BlogClubPageState extends State<BlogClubPage>{
               ],
             )
           ),
-          DraggableScrollableSheet(
-            initialChildSize: 0.1,
-            minChildSize: 0.1,
-            maxChildSize: 0.8,
-            builder: (context, scrollController) {
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.all(16),
-                decoration:  BoxDecoration(
-                  color: const Color.fromARGB(255,56, 106, 237).withOpacity(sheetOpacity),
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                ),
-                child: NotificationListener<DraggableScrollableNotification>(
-                  onNotification: (notification) {
-                    setState(() {
-                      if(notification.extent <= 0.1){
-                        sheetOpacity = 0.0;
-                      } else if(notification.extent >= 0.8){
-                        sheetOpacity = 1.0;
-                      } else {
-                        sheetOpacity = notification.extent;
-                      }
-                    });
-                    return true;
-                  },
-                child: ListView(
-                  controller: scrollController,
+          SlidingUpPanel(
+            controller: _panelController,
+            minHeight: 50,
+            panel: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter your email',
-                        // border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter your password',
-                        // border: OutlineInputBorder(),
-                      ),
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Login'),
-                    ),
-                  ],
+                  TextButton(onPressed: () {
+                    setState(() {
+                      selectedTab = 'Login';
+                    });
+                    _panelController.open();
+                  }, 
+                  child: const Text('LOGIN', style: TextStyle(color: Colors.white),),
+                  ),
+                  TextButton(onPressed: () {
+                    setState(() {
+                      selectedTab = 'Sign-up';
+                    });
+                    _panelController.open();
+                  }, 
+                  child: const Text('SIGN UP', style: TextStyle(color: Colors.white),),
+                  ),
+                ],
                 ),
-              ),
-              );
-            },
-          )
+                Expanded(
+                  child: ListView(
+                    children: selectedTab == 'Login' ? _buildLoginFields() : _buildSignUpFields(),
+                  ),
+                ),
+              ],
+            ),
+            color: const Color.fromARGB(255,56, 106, 237),
+          ),
         ],
       ),
     );
   }
+}
+
+List<Widget> _buildLoginFields() {
+  return [
+    const Text(
+      'Login',
+      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 20),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Email'),
+    ),
+    const SizedBox(height: 10),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Password'),
+      obscureText: true,
+    ),
+    const SizedBox(height: 20),
+    ElevatedButton(
+      onPressed: () {},
+      child: const Text('Login'),
+    ),
+  ];
+}
+
+List<Widget> _buildSignUpFields() {
+  return [
+    const Text(
+      'Sign Up',
+      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 20),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Full Name'),
+    ),
+    const SizedBox(height: 10),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Email'),
+    ),
+    const SizedBox(height: 10),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Password'),
+      obscureText: true,
+    ),
+    const SizedBox(height: 10),
+    const TextField(
+      decoration: InputDecoration(labelText: 'Confirm Password'),
+      obscureText: true,
+    ),
+    const SizedBox(height: 20),
+    ElevatedButton(
+      onPressed: () {},
+      child: const Text('Sign Up'),
+    ),
+  ];
 }
