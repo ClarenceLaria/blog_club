@@ -121,7 +121,10 @@ class _BlogClubPageState extends State<BlogClubPage>{
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0))        
                     ),
-                    child: selectedTab == 'Login' ? Column(children: _buildLoginFields()) : Column(children: _buildSignUpFields()),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields()) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields()),
+                    )
                   ),
                 ),
               ],
@@ -137,23 +140,51 @@ class _BlogClubPageState extends State<BlogClubPage>{
 List<Widget> _buildLoginFields() {
   return [
     const Text(
-      'Login',
-      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      textAlign: TextAlign.center,
+      'Welcome back',
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    ),
+    const Text(
+      'Sign in with your account',
+      style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
     ),
     const SizedBox(height: 20),
     const TextField(
-      decoration: InputDecoration(labelText: 'Email'),
+      decoration: InputDecoration(labelText: 'Username'),
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
     ),
     const SizedBox(height: 10),
     const TextField(
       decoration: InputDecoration(labelText: 'Password'),
       obscureText: true,
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
     ),
     const SizedBox(height: 20),
-    ElevatedButton(
-      onPressed: () {},
-      child: const Text('Login'),
+    SizedBox(
+      width: double.infinity,
+      child: TextButton(
+        onPressed: () {},
+        style: TextButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))
+          ),
+          backgroundColor: const Color.fromARGB(255,56, 106, 237),
+        ),
+        child: const Text('LOGIN', style: TextStyle(color: Colors.white, fontSize: 22,),),
+      ),
+    ),
+    const SizedBox(height: 20,),
+    const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Forgot your password?',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+        ),
+        Text(
+          'Reset here',
+          style: TextStyle(color:Color.fromARGB(255,56, 106, 237), fontSize: 14, fontWeight: FontWeight.normal),
+        ),
+      ],
     ),
   ];
 }
