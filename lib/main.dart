@@ -33,7 +33,13 @@ class _BlogClubPageState extends State<BlogClubPage>{
   double sheetOpacity = 0.0;
   String selectedTab = 'Login';
   final PanelController _panelController = PanelController();
+  bool passwordVisible = false;
 
+  void togglePasswordVisibility() {
+    setState(() {
+      passwordVisible = !passwordVisible;
+    });
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -87,6 +93,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
           SlidingUpPanel(
             controller: _panelController,
             minHeight: 50,
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
             panel: Column(
               children: [
@@ -123,7 +130,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(20),
-                      child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields()) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields()),
+                      child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields(togglePasswordVisibility, passwordVisible)) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields()),
                     )
                   ),
                 ),
@@ -136,8 +143,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
     );
   }
 }
-
-List<Widget> _buildLoginFields() {
+List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool passwordVisible) {
   return [
     const Text(
       'Welcome back',
@@ -153,12 +159,21 @@ List<Widget> _buildLoginFields() {
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
     ),
     const SizedBox(height: 10),
-    const TextField(
-      decoration: InputDecoration(labelText: 'Password'),
-      obscureText: true,
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    TextField(
+      obscureText: !passwordVisible,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        suffixIcon: TextButton(
+          onPressed: togglePasswordVisibility, 
+          child: Text(
+            passwordVisible ? 'Hide' : 'Show',
+            style: const TextStyle(color: Color.fromARGB(255,56, 106, 237)),
+          ),
+        )
+      ),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
     ),
-    const SizedBox(height: 20),
+    const SizedBox(height: 30),
     SizedBox(
       width: double.infinity,
       child: TextButton(
@@ -169,22 +184,56 @@ List<Widget> _buildLoginFields() {
           ),
           backgroundColor: const Color.fromARGB(255,56, 106, 237),
         ),
-        child: const Text('LOGIN', style: TextStyle(color: Colors.white, fontSize: 22,),),
+        child: const Padding(
+          padding:  EdgeInsets.all(8.0),
+          child: Text('LOGIN', style: TextStyle(color: Colors.white, fontSize: 22,),),
+        ),
       ),
     ),
     const SizedBox(height: 20,),
-    const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Forgot your password?',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+    Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Forgot your password?',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+          ),
+          TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.only(left: 5.0),
+            ),
+            child: const Text(
+              'Reset here',
+              style: TextStyle(color:Color.fromARGB(255,56, 106, 237), fontSize: 17, fontWeight: FontWeight.normal),
+            ),
+          ),
+        ],
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0),
+      child: Column(
+        children: [
+         const Text(
+                'OR SIGN IN WITH',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                textAlign: TextAlign.center,
+          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/google.png', width: 60, height: 60,),
+              Image.asset('assets/images/facebook.png', width: 60, height: 60,),
+              Image.asset('assets/images/twitter.png', width: 60, height: 60,),
+            ],
+          ),
         ),
-        Text(
-          'Reset here',
-          style: TextStyle(color:Color.fromARGB(255,56, 106, 237), fontSize: 14, fontWeight: FontWeight.normal),
-        ),
-      ],
+        ],
+      ),
     ),
   ];
 }
