@@ -242,8 +242,11 @@ List<Widget> _buildSignUpFields() {
   return [
     const Text(
       'Sign Up',
-      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    ),
+    const Text(
+      'Create an account',
+      style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
     ),
     const SizedBox(height: 20),
     const TextField(
@@ -263,10 +266,22 @@ List<Widget> _buildSignUpFields() {
       decoration: InputDecoration(labelText: 'Confirm Password'),
       obscureText: true,
     ),
-    const SizedBox(height: 20),
-    ElevatedButton(
-      onPressed: () {},
-      child: const Text('Sign Up'),
+    const SizedBox(height: 30),
+    SizedBox(
+      width: double.infinity,
+      child: TextButton(
+        onPressed: () {},
+        style: TextButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))
+          ),
+          backgroundColor: const Color.fromARGB(255,56, 106, 237),
+        ),
+        child: const Padding(
+          padding:  EdgeInsets.all(8.0),
+          child: Text('SIGN UP', style: TextStyle(color: Colors.white, fontSize: 22,),),
+        ),
+      ),
     ),
   ];
 }
