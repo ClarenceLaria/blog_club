@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blog_club/landing.dart';
+import 'package:blog_club/on_boarding.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,6 +32,6 @@ class _BlogClubPageState extends State<BlogClubPage>{
 
   @override
   Widget build(BuildContext context){
-    return const Landing();
+    return const OnBoarding();
   }
 }
