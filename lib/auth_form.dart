@@ -27,7 +27,7 @@ class _AuthFormState extends State<AuthForm> {
     return SlidingUpPanel(
           controller: _panelController,
           minHeight: 50,
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
+          maxHeight: MediaQuery.of(context).size.height * 0.75,
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
           panel: Column(
             children: [
@@ -145,7 +145,7 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
       ),
     ),
     Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Column(
         children: [
          const Text(
@@ -154,7 +154,7 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
                 textAlign: TextAlign.center,
           ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

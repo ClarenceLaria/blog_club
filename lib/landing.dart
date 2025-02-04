@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:blog_club/auth_form.dart';
 
 class Landing extends StatefulWidget {
-  const Landing({Key? key}) : super(key: key);
+  const Landing({super.key});
 
   @override
-  _LandingState createState() => _LandingState();
+  State<Landing> createState() => _LandingState();
 }
 
 class _LandingState extends State<Landing> {

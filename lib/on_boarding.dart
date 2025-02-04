@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:blog_club/constants/on_boarding_data.dart';
-import 'package:blog_club/auth_form.dart';
+import 'package:blog_club/landing.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -29,8 +29,7 @@ class _OnBoardingState extends State<OnBoarding> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Column(
         children: [
           Expanded(
             child: PageView.builder(
@@ -54,13 +53,12 @@ class _OnBoardingState extends State<OnBoarding> {
             ),
           ),
         ],
-      ),
     );
   }
 }
 
 class OnBoardingWidget extends StatelessWidget {
-  OnBoardingWidget({
+  const OnBoardingWidget({
     super.key,
     required this.image,
     required this.title,
@@ -75,7 +73,7 @@ class OnBoardingWidget extends StatelessWidget {
   final String description;
   final int length;
   final int currentIndex;
-  void Function() nextPage;
+  final void Function() nextPage;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +143,12 @@ class OnBoardingWidget extends StatelessWidget {
                     ),
                     if (currentIndex == length - 1)
                       TextButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => const Landing()),
+                          );
+                        }, 
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
                           shape: const RoundedRectangleBorder(

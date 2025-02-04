@@ -24,7 +24,9 @@ class BlogClubPage extends StatefulWidget{
   const BlogClubPage ({super.key});
 
   @override
-  _BlogClubPageState createState() => _BlogClubPageState();
+  State<BlogClubPage> createState() {
+    return _BlogClubPageState();
+  }
 }
 
 class _BlogClubPageState extends State<BlogClubPage>{
