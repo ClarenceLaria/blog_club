@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:blog_club/constants/on_boarding_data.dart';
+import 'package:blog_club/auth_form.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -23,6 +24,9 @@ class _OnBoardingState extends State<OnBoarding> {
   final PageController _pageController = PageController();
   int currentOnBoarding = 0;
 
+  void nextPage() {
+    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +48,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   image: data[index].image,
                   length: data.length,
                   currentIndex: currentOnBoarding,
+                  nextPage: nextPage,
                 );
               },
             ),
@@ -55,13 +60,14 @@ class _OnBoardingState extends State<OnBoarding> {
 }
 
 class OnBoardingWidget extends StatelessWidget {
-  const OnBoardingWidget({
+  OnBoardingWidget({
     super.key,
     required this.image,
     required this.title,
     required this.description,
     required this.length,
     required this.currentIndex,
+    required this.nextPage,
   });
 
   final String image;
@@ -69,6 +75,7 @@ class OnBoardingWidget extends StatelessWidget {
   final String description;
   final int length;
   final int currentIndex;
+  void Function() nextPage;
 
   @override
   Widget build(BuildContext context) {
@@ -136,18 +143,31 @@ class OnBoardingWidget extends StatelessWidget {
                         dotColor: const Color.fromARGB(255, 56, 106, 237).withOpacity(0.5),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {}, 
-                      style: IconButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                    if (currentIndex == length - 1)
+                      TextButton(
+                        onPressed: () {}, 
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          backgroundColor: const Color.fromARGB(255,56, 106, 237),
                         ),
-                        backgroundColor: const Color.fromARGB(255,56, 106, 237),
+                        child: const Text('Get Started', style: TextStyle(color: Colors.white, fontSize: 16)),
+                      )
+                    else
+                      IconButton(
+                        onPressed: nextPage,
+                        style: IconButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                          backgroundColor: const Color.fromARGB(255,56, 106, 237),
+                        ),
+                        icon: const Icon(Icons.arrow_forward_outlined, size: 25.0,), 
+                        color: Colors.white,
                       ),
-                      icon: const Icon(Icons.arrow_forward_outlined, size: 30.0,), 
-                      color: Colors.white,
-                    ),
                   ],
                 ),
               ),
