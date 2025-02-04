@@ -2,30 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:blog_club/constants/on_boarding_data.dart';
 
-class OnBoarding extends StatelessWidget {
-  OnBoarding({super.key});
+class OnBoarding extends StatefulWidget {
+  const OnBoarding({super.key});
 
-  final onBoarding1 = data[0];
-  final onBoarding2 = data[1];
-  final onBoarding3 = data[2];
+  // final onBoarding1 = data[0];
+  // final onBoarding2 = data[1];
+  // final onBoarding3 = data[2];
 
-  final currentOnBoarding = 0;
+  // final currentOnBoarding = 0;
   
   @override
+  State<OnBoarding> createState() {
+    return _OnBoardingState();
+  }
+}
+
+class _OnBoardingState extends State<OnBoarding> {
+  _OnBoardingState();
+
+  final PageController _pageController = PageController();
+  int currentOnBoarding = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return PageView(
+    return Scaffold(
+      body: Column(
         children: [
-        OnBoardingWidget(
-          title: onBoarding1.title,
-          description: onBoarding1.description,
-          image: onBoarding1.image,
-        ),
-        OnBoardingWidget(
-          title: onBoarding2.title,
-          description: onBoarding2.description,
-          image: onBoarding2.image,
-        ),          
-      ],
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  currentOnBoarding = index;
+                });
+              },
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return OnBoardingWidget(
+                  title: data[index].title,
+                  description: data[index].description,
+                  image: data[index].image,
+                  length: data.length,
+                  currentIndex: currentOnBoarding,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -36,11 +60,15 @@ class OnBoardingWidget extends StatelessWidget {
     required this.image,
     required this.title,
     required this.description,
+    required this.length,
+    required this.currentIndex,
   });
 
   final String image;
   final String title;
   final String description;
+  final int length;
+  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +127,8 @@ class OnBoardingWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AnimatedSmoothIndicator(
-                      activeIndex: 3,
-                      count: 3,
+                      activeIndex: currentIndex,
+                      count: length,
                       effect: ExpandingDotsEffect(
                         dotWidth: 10,
                         dotHeight: 10,
@@ -128,6 +156,6 @@ class OnBoardingWidget extends StatelessWidget {
         ),
       ),
     ],
-                );
+    );
   }
 }

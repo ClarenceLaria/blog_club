@@ -16,7 +16,7 @@ class OnBoardingItem {
   var data = [
     OnBoardingItem(
       title: 'Welcome to the App',
-      description: 'This is a simple onboarding screen',
+      description: 'Discover a world of curated content tailored to your interests',
       image: 'assets/images/on_boarding_images/reading.jpg',
     ),
     OnBoardingItem(
