@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:blog_club/components/navigation_bar.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({super.key, required this.onOpen});
@@ -76,7 +77,7 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
-                    child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields(togglePasswordVisibility, passwordVisible)) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields(togglePasswordVisibility, passwordVisible)),
+                    child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields(togglePasswordVisibility, passwordVisible, context)) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields(togglePasswordVisibility, passwordVisible)),
                   )
                 ),
               ),
@@ -87,7 +88,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 }
 
-List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool passwordVisible) {
+List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool passwordVisible, BuildContext context) {
   return [
     const Text(
       'Welcome back',
@@ -121,7 +122,12 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
     SizedBox(
       width: double.infinity,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => const NavigationBarWidget()),
+          );
+        },
         style: TextButton.styleFrom(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))
@@ -144,7 +150,7 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {}, 
             style: TextButton.styleFrom(
               padding: const EdgeInsets.only(left: 5.0),
             ),

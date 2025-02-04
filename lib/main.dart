@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blog_club/on_boarding.dart';
+import 'package:blog_club/components/on_boarding.dart';
 
 void main() {
   runApp(MyApp());
