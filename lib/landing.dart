@@ -11,6 +11,14 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   _LandingState();
 
+  bool isAuthFormOpen = false;
+
+  void handleAuthFormOpen(bool isOpen) {
+    setState(() {
+      isAuthFormOpen = isOpen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +32,10 @@ class _LandingState extends State<Landing> {
               )
             ),
           ),
-          Center(
+          Positioned(
+            top: isAuthFormOpen ? MediaQuery.of(context).size.height * 0.10 : MediaQuery.of(context).size.height * 0.4,
+            left: 0,
+            right: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -59,9 +70,9 @@ class _LandingState extends State<Landing> {
             ),
                   )
               ],
-            )
+            ),
           ),
-          const AuthForm(),
+          AuthForm(onOpen: handleAuthFormOpen),
         ],
       ),
     );

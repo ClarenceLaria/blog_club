@@ -11,7 +11,6 @@ class OnBoardingItem {
   });
 }
 
-// class OnBoardingData {
 
   var data = [
     OnBoardingItem(
@@ -30,7 +29,6 @@ class OnBoardingItem {
       image: 'assets/images/on_boarding_images/community.jpg',
     ),
   ];
-// }
       // 'image': 'assets/images/on_boarding_images/meditation.jpg',
       // 'image2': 'assets/images/on_boarding_images/technology_vr.jpg',
       // 'image3': 'assets/images/on_boarding_images/turtle.jpg',

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  const AuthForm({super.key, required this.onOpen});
+
+  final Function(bool) onOpen;
 
   @override
-  _AuthFormState createState() => _AuthFormState();
+  State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
@@ -26,6 +28,16 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     return SlidingUpPanel(
           controller: _panelController,
+          onPanelSlide: (position) {
+            if (position > 0.1){
+            widget.onOpen(true);
+            } else {
+              widget.onOpen(false);
+            }
+          },
+          onPanelClosed: () {
+            widget.onOpen(false);
+          },
           minHeight: 50,
           maxHeight: MediaQuery.of(context).size.height * 0.75,
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
