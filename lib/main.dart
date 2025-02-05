@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blog_club/components/on_boarding.dart';
+import 'package:blog_club/pages/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget{
         primarySwatch: Colors.blue,
       ),
       home: const BlogClubPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

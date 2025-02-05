@@ -24,35 +24,88 @@ class _OnBoardingState extends State<OnBoarding> {
   final PageController _pageController = PageController();
   int currentOnBoarding = 0;
 
+  bool lastPage = false;
+
   void nextPage() {
     _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      body: Stack(
         children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  currentOnBoarding = index;
-                });
-              },
-              itemCount: data.length,
-              itemBuilder: (context, index) {
-                return OnBoardingWidget(
-                  title: data[index].title,
-                  description: data[index].description,
-                  image: data[index].image,
-                  length: data.length,
-                  currentIndex: currentOnBoarding,
-                  nextPage: nextPage,
-                );
-              },
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                currentOnBoarding = index;
+                lastPage = index == 2 ? true : false;
+              });
+            },
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return OnBoardingWidget(
+                title: data[index].title,
+                description: data[index].description,
+                image: data[index].image,
+                length: data.length,
+                currentIndex: currentOnBoarding,
+                nextPage: nextPage,
+              );
+            },
+          ),
+          Container(
+            alignment: const Alignment(0,1),
+            padding: const EdgeInsets.symmetric(horizontal: 20,),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SmoothPageIndicator(
+                  controller: _pageController,
+                  count: 3,
+                  effect: ExpandingDotsEffect(
+                    dotWidth: 10,
+                    dotHeight: 10,
+                    activeDotColor: const Color.fromARGB(255,56, 106, 237),
+                    dotColor: const Color.fromARGB(255, 56, 106, 237).withOpacity(0.5),
+                  ),
+                ),
+                if (lastPage)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => const Landing()),
+                      );
+                    }, 
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      backgroundColor: const Color.fromARGB(255,56, 106, 237),
+                    ),
+                    child: const Text('Get Started', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  )
+                else
+                  IconButton(
+                    onPressed: nextPage,
+                    style: IconButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      backgroundColor: const Color.fromARGB(255,56, 106, 237),
+                    ),
+                    icon: const Icon(Icons.arrow_forward_outlined, size: 25.0,), 
+                    color: Colors.white,
+                  ),
+              ],
             ),
           ),
         ],
+      ),
     );
   }
 }
@@ -127,53 +180,7 @@ class OnBoardingWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AnimatedSmoothIndicator(
-                      activeIndex: currentIndex,
-                      count: length,
-                      effect: ExpandingDotsEffect(
-                        dotWidth: 10,
-                        dotHeight: 10,
-                        activeDotColor: const Color.fromARGB(255,56, 106, 237),
-                        dotColor: const Color.fromARGB(255, 56, 106, 237).withOpacity(0.5),
-                      ),
-                    ),
-                    if (currentIndex == length - 1)
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context, 
-                            MaterialPageRoute(builder: (context) => const Landing()),
-                          );
-                        }, 
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                          backgroundColor: const Color.fromARGB(255,56, 106, 237),
-                        ),
-                        child: const Text('Get Started', style: TextStyle(color: Colors.white, fontSize: 16)),
-                      )
-                    else
-                      IconButton(
-                        onPressed: nextPage,
-                        style: IconButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30.0),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                          backgroundColor: const Color.fromARGB(255,56, 106, 237),
-                        ),
-                        icon: const Icon(Icons.arrow_forward_outlined, size: 25.0,), 
-                        color: Colors.white,
-                      ),
-                  ],
-                ),
-              ),
+              
             ],
           ),
         ),
