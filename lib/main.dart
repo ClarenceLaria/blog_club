@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:blog_club/components/on_boarding.dart';
+import 'package:blog_club/components/stories.dart';
 import 'package:blog_club/pages/home.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget{
@@ -47,7 +47,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
               )
             ),
           ),
-          const OnBoarding(),
+          const HomePage(),
         ],
       ),
     );

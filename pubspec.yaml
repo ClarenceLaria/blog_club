@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   sliding_up_panel: ^2.0.0+1
   smooth_page_indicator: ^1.2.0+3
+  story_view: ^0.16.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
