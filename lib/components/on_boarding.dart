@@ -56,7 +56,7 @@ class _OnBoardingState extends State<OnBoarding> {
           ),
           Container(
             alignment: const Alignment(0,1),
-            padding: const EdgeInsets.symmetric(horizontal: 20,),
+            margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
