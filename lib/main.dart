@@ -47,7 +47,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
               )
             ),
           ),
-          const OnBoarding(),
+          const HomePage(),
         ],
       ),
     );
