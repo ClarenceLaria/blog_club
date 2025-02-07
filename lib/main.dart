@@ -1,5 +1,5 @@
+import 'package:blog_club/components/on_boarding.dart';
 import 'package:flutter/material.dart';
-import 'package:blog_club/components/stories.dart';
 import 'package:blog_club/pages/home.dart';
 
 void main() {
@@ -47,7 +47,7 @@ class _BlogClubPageState extends State<BlogClubPage>{
               )
             ),
           ),
-          const HomePage(),
+          const OnBoarding(),
         ],
       ),
     );

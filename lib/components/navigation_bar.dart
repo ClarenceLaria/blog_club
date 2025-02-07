@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:blog_club/pages/home.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({super.key});
@@ -16,7 +17,7 @@ class _NavigationBarState extends State<NavigationBarWidget> {
 
   // List of pages corresponding to each tab
   final List<Widget> _pages = [
-    const Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
+    const Center(child: HomePage()),
     const Center(child: Text('Article Page', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Add Page', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Search Page', style: TextStyle(fontSize: 24))),
