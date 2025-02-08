@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(223,229,236,255).withOpacity(0.1),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            // const SizedBox(height: 20), 
             Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.1,
@@ -116,24 +115,38 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 children: [
                   SizedBox(
-                    height: 270,
+                    height: 320,
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1, bottom: 20),
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1, bottom: 20, top: 20),
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.1),
                           children: [
                             Container(
-                              margin: const EdgeInsets.all(10),
+                              height: 250,
+                              width: 200,
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
-                                boxShadow: [
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
+                                boxShadow: const [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    blurRadius: 15,
-                                    spreadRadius: 1,
-                                    offset: const Offset(0, 8),
-                                  )
+                                    blurRadius: 5,
+                                    offset: Offset(0, 5)
+                                  ),
+                                  BoxShadow(
+                                    blurRadius: 8,
+                                    spreadRadius: 2,
+                                    color: Colors.white,
+                                    offset: Offset(-5, 0)
+                                  ),
+                                  BoxShadow(
+                                    blurRadius: 8,
+                                    spreadRadius: 2,
+                                    color: Colors.white,
+                                    offset: Offset(5, 0)
+                                  ),
                                 ]
                               ),
                               child: Stack(
@@ -162,42 +175,59 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    blurRadius: 15,
-                                    spreadRadius: 1,
-                                    offset: const Offset(0, 8),
-                                  )
-                                ]
-                              ),
-                              child: Stack(
-                                alignment: Alignment.bottomLeft,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: const Image(
-                                      image: AssetImage('assets/images/on_boarding_images/turtle.webp'),
-                                      height: 250,
-                                      width: 200,
-                                      fit: BoxFit.cover,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Container(
+                                height: 250,
+                                width: 200,
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 5,
+                                      offset: Offset(0, 5)
                                     ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                                    child: const Text(
-                                      'Adventure',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
+                                    BoxShadow(
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                      color: Colors.white,
+                                      offset: Offset(-5, 0)
+                                    ),
+                                    BoxShadow(
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                      color: Colors.white,
+                                      offset: Offset(5, 0)
+                                    ),
+                                  ]
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.bottomLeft,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: const Image(
+                                        image: AssetImage('assets/images/on_boarding_images/turtle.webp'),
+                                        height: 250,
+                                        width: 200,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                      child: const Text(
+                                        'Adventure',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -211,94 +241,161 @@ class _HomePageState extends State<HomePage> {
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Latest News',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {}, 
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                ),
+                                child: const Text(
+                                  'More',
+                                  style: TextStyle(fontSize: 14, color: Color.fromARGB(237,56,106,255)),
+                                ),
+                              ),
+                            ],
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  'Latest News',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Image(
+                                    image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
+                                    height: 150,
+                                    width: 100,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                TextButton(
-                                  onPressed: () {}, 
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.only(left: 5.0),
-                                  ),
-                                  child: const Text(
-                                    'More',
-                                    style: TextStyle(fontSize: 14, color: Color.fromARGB(237,56,106,255)),
+                                const SizedBox(width: 20,),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'BIG DATA',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(237,56,106,255),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10,),
+                                      const Text(
+                                        'Why Big Data Needs Thick Data?',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              semanticLabel: '2.1k', 
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.timelapse_outlined,
+                                              semanticLabel: '1hr ago', 
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.bookmark_border_outlined,
+                                              color: Color.fromARGB(237,56,106,255),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: const Image(
-                                  image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
-                                  height: 150,
-                                  width: 100,
-                                  fit: BoxFit.cover,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Image(
+                                    image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
+                                    height: 150,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 20,),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'BIG DATA',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color.fromARGB(237,56,106,255),
-                                        fontWeight: FontWeight.w500,
+                                const SizedBox(width: 20,),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'BIG DATA',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(237,56,106,255),
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    const Text(
-                                      'Why Big Data Needs Thick Data?',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                      const SizedBox(height: 10,),
+                                      const Text(
+                                        'Why Big Data Needs Thick Data?',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {}, 
-                                          icon: const Icon(
-                                            Icons.thumb_up_alt_outlined,
-                                            semanticLabel: '2.1k', 
+                                      const SizedBox(height: 10,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              semanticLabel: '2.1k', 
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {}, 
-                                          icon: const Icon(
-                                            Icons.timelapse_outlined,
-                                            semanticLabel: '1hr ago', 
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.timelapse_outlined,
+                                              semanticLabel: '1hr ago', 
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {}, 
-                                          icon: const Icon(
-                                            Icons.bookmark_border_outlined,
-                                            color: Color.fromARGB(237,56,106,255),
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.bookmark_border_outlined,
+                                              color: Color.fromARGB(237,56,106,255),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
