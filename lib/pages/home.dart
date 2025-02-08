@@ -37,9 +37,26 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications),
+                  Stack(
+                    clipBehavior: Clip.none, // Allows the red dot to overflow the Stack
+                    children: [
+                      const Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.black,
+                      ),
+                      Positioned(
+                        left: 3,
+                        top: 4,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
