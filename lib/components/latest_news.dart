@@ -70,27 +70,55 @@ class LatestNews extends StatelessWidget{
                         const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.thumb_up_alt_outlined,
-                                semanticLabel: '2.1k', 
-                              ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    Icons.thumb_up_alt_outlined,
+                                    size: 18,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.1k',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.timelapse_outlined,
-                                semanticLabel: '1hr ago', 
-                              ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    Icons.timelapse_outlined,
+                                    size: 18,
+                                  ),
+                                ),
+                                const Text(
+                                  '1hr ago',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.bookmark_border_outlined,
-                                color: Color.fromARGB(237,56,106,255),
-                              ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    size: 18,
+                                    Icons.bookmark_border_outlined,
+                                    color: Color.fromARGB(237,56,106,255),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -137,27 +165,55 @@ class LatestNews extends StatelessWidget{
                         const SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.thumb_up_alt_outlined,
-                                semanticLabel: '2.1k', 
-                              ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    Icons.thumb_up_alt_outlined,
+                                    size: 18,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.1k',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.timelapse_outlined,
-                                semanticLabel: '1hr ago', 
-                              ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    Icons.timelapse_outlined,
+                                    size: 18,
+                                  ),
+                                ),
+                                const Text(
+                                  '1hr ago',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
-                            IconButton(
-                              onPressed: () {}, 
-                              icon: const Icon(
-                                Icons.bookmark_border_outlined,
-                                color: Color.fromARGB(237,56,106,255),
-                              ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {}, 
+                                  icon: const Icon(
+                                    size: 18,
+                                    Icons.bookmark_border_outlined,
+                                    color: Color.fromARGB(237,56,106,255),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
