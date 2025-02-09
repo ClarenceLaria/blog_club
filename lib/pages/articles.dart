@@ -120,7 +120,7 @@ class Articles extends StatelessWidget{
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     FractionallySizedBox(
                       widthFactor: 0.8,
                       child: Column(
