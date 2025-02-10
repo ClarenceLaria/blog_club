@@ -29,106 +29,90 @@ class _AddPageState extends State<AddPage> {
           alignment: Alignment.center,
           child: FractionallySizedBox(
             widthFactor: 0.8,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'New Article',
-                      style: TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {}, 
-                      icon: const Icon(
-                        Icons.save_alt,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: ListView(
+            child: Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Title',
-                          hintText: 'Enter a Blog Title',
-                          // border: OutlineInputBorder(),
-                        ),
-                        maxLength: 100,
-                        maxLines: null,
-                      ),
-                      // const SizedBox(height: 10),
-                      // DropdownButtonFormField(
-                      //   items: items, 
-                      //   onChanged: (value) {},
-                      //   decoration: const InputDecoration(
-                      //     labelText: 'Category',
-                      //     hintText: 'Select a Category',
-                      //     // border: OutlineInputBorder(),
-                      //   ),
-                      // ),
-                      const SizedBox(height: 10),
-                      QuillSimpleToolbar(
-                        controller: _controller,
-                        configurations: const QuillSimpleToolbarConfigurations(
-                          toolbarIconAlignment: WrapAlignment.start,
-                          toolbarIconCrossAlignment: WrapCrossAlignment.start,
-                          toolbarSectionSpacing: kToolbarSectionSpacing/20,
-                          multiRowsDisplay: false,
-                          showDividers: false,
-                          showFontFamily: false,
-                          showFontSize: false,
-                          showBoldButton: true,
-                          showItalicButton: true,
-                          showSmallButton: false,
-                          showUnderLineButton: false,
-                          showLineHeightButton: false,
-                          showStrikeThrough: false,
-                          showInlineCode: false,
-                          showColorButton: false,
-                          showBackgroundColorButton: false,
-                          showClearFormat: false,
-                          showAlignmentButtons: true,
-                          showLeftAlignment: true,
-                          showCenterAlignment: false,
-                          showRightAlignment: false,
-                          showJustifyAlignment: false,
-                          showHeaderStyle: true,
-                          showListNumbers: true,
-                          showListBullets: true,
-                          showListCheck: false,
-                          showCodeBlock: false,
-                          showQuote: false,
-                          showIndent: false,
-                          showLink: true,
-                          showUndo: true,
-                          showRedo: true,
-                          showDirection: false,
-                          showSearchButton: false,
-                          showSubscript: false,
-                          showSuperscript: false,
-                          showClipboardCut: true,
-                          showClipboardCopy: true,
-                          showClipboardPaste: true,
+                      const Text(
+                        'New Article',
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Expanded(
-                        child: QuillEditor.basic(
-                          controller: _controller,
-                          // focusNode: FocusNode(),
-                          configurations: const QuillEditorConfigurations(),
+                      IconButton(
+                        onPressed: () {}, 
+                        icon: const Icon(
+                          Icons.save_alt,
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
-              ],
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'Title',
+                              hintText: 'Enter a Blog Title',
+                              // border: OutlineInputBorder(),
+                            ),
+                            maxLength: 100,
+                            maxLines: null,
+                          ),
+                          const SizedBox(height: 10),
+                          DropdownButtonFormField(
+                            items: items, 
+                            onChanged: (value) {},
+                            decoration: const InputDecoration(
+                              labelText: 'Category',
+                              hintText: 'Select a Category',
+                              // border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          QuillSimpleToolbar(
+                            controller: _controller,
+                            configurations: QuillSimpleToolbarConfigurations(
+                              decoration: BoxDecoration(
+                                color:  const Color.fromARGB(255,15, 23, 42),
+                                border: Border.all(color: Colors.black, width: 1.0),
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              buttonOptions: const QuillSimpleToolbarButtonOptions(
+                                base: QuillToolbarBaseButtonOptions(
+                                  iconTheme: QuillIconTheme(iconButtonSelectedData: IconButtonData(color: Colors.white), iconButtonUnselectedData: IconButtonData(color: Colors.white)),
+                                ),
+                              ),
+                              toolbarIconAlignment: WrapAlignment.start,
+                              toolbarIconCrossAlignment: WrapCrossAlignment.start,
+                              toolbarSectionSpacing: kToolbarSectionSpacing/20,
+                              multiRowsDisplay: false,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 400,
+                            decoration: const BoxDecoration(
+                              border: Border(top: BorderSide(color: Colors.black26, width: 2.0)),
+                            ),
+                            child: QuillEditor.basic(
+                              controller: _controller,
+                              // focusNode: FocusNode(),
+                              configurations: const QuillEditorConfigurations(),
+                            ),
+                          )
+                          
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
