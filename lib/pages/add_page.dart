@@ -79,15 +79,15 @@ class _AddPageState extends State<AddPage> {
                             controller: _controller,
                             configurations: QuillSimpleToolbarConfigurations(
                               decoration: BoxDecoration(
-                                color:  const Color.fromARGB(255,15, 23, 42),
+                                // color:  const Color.fromARGB(255,15, 23, 42),
                                 border: Border.all(color: Colors.black, width: 1.0),
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
-                              buttonOptions: const QuillSimpleToolbarButtonOptions(
-                                base: QuillToolbarBaseButtonOptions(
-                                  iconTheme: QuillIconTheme(iconButtonSelectedData: IconButtonData(color: Colors.white), iconButtonUnselectedData: IconButtonData(color: Colors.white)),
-                                ),
-                              ),
+                              // buttonOptions: const QuillSimpleToolbarButtonOptions(
+                              //   base: QuillToolbarBaseButtonOptions(
+                              //     iconTheme: QuillIconTheme(iconButtonSelectedData: IconButtonData(color: Colors.white), iconButtonUnselectedData: IconButtonData(color: Colors.white)),
+                              //   ),
+                              // ),
                               toolbarIconAlignment: WrapAlignment.start,
                               toolbarIconCrossAlignment: WrapCrossAlignment.start,
                               toolbarSectionSpacing: kToolbarSectionSpacing/20,

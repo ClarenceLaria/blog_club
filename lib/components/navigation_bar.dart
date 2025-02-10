@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:blog_club/pages/home.dart';
 import 'package:blog_club/pages/articles.dart';
 import 'package:blog_club/pages/add_page.dart';
+import 'package:blog_club/pages/menu_page.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({super.key});
@@ -23,7 +24,7 @@ class _NavigationBarState extends State<NavigationBarWidget> {
     const Center(child: Articles()),
     const Center(child: AddPage()),
     const Center(child: Text('Search Page', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Menu Page', style: TextStyle(fontSize: 24))),
+    const Center(child: MenuPage()),
   ];
   
   void _onItemTapped(int index) {
