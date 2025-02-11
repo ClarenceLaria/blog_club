@@ -44,6 +44,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
                 const SizedBox(height: 10),
                 Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20,),
@@ -59,8 +60,9 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                         ],
                       ),
-                      height: 300,
+                      height: 270,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -75,9 +77,9 @@ class _MenuPageState extends State<MenuPage> {
                                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
+                                  padding: const EdgeInsets.all(5.0),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(20),
                                     child: const Image(
                                       image: AssetImage(
                                         'assets/images/face4.webp',  
@@ -96,21 +98,21 @@ class _MenuPageState extends State<MenuPage> {
                                   Text(
                                     '@janedoe',
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   Text(
                                     'Jane Doe',
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
                                     'UX DESIGNER',
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       color: Color.fromARGB(255, 56, 106, 237),
                                     ),
                                   ),
@@ -119,31 +121,51 @@ class _MenuPageState extends State<MenuPage> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          const Text(
-                            'About Me',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Text(
-                            'Jane Doe is a UX Designer with a passion for designing beautiful and functional user experiences.',
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.grey,
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'About Me',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  'Jane Doe is a UX Designer with a passion for designing beautiful and functional user experiences.',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
                     Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width * 0.57,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 56, 106, 237),
+                        border: Border.all(
+                          width: 2.0,
+                          color: const Color.fromARGB(255, 56, 106, 237),
+                        ),
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      ),
+                      margin: const EdgeInsets.only(top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(3, (index) {
-                          Color activeColor = Colors.white;
-                          Color inactiveColor = Colors.grey;
+                          Color activeColor = const Color.fromARGB(255, 32, 81, 203);
+                          Color inactiveColor = const Color.fromARGB(255, 56, 106, 237);
                           return TextButton(
                             onPressed: () {
                               setState(() {
@@ -151,26 +173,26 @@ class _MenuPageState extends State<MenuPage> {
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: activeIndex == index ? const Color.fromARGB(255, 56, 106, 237) : const Color.fromARGB(255, 32, 81, 203),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                              backgroundColor: activeIndex == index ? activeColor : inactiveColor,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
                               ),
                             ),
                             child: Column(
                               children: [
                                 Text(
                                   index == 0 ? '52' : index == 1 ? '250' : '4.5K',
-                                  style: TextStyle(
-                                    color: activeIndex == index ? activeColor : inactiveColor,
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   index == 0 ? 'Posts' : index == 1 ? 'Following' : 'Followers',
-                                  style: TextStyle(
-                                    color: activeIndex == index ? activeColor : inactiveColor,
-                                    fontSize: 14,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
                                   ),
                                 ),
                               ],
@@ -181,7 +203,7 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
