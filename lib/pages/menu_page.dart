@@ -44,7 +44,8 @@ class _MenuPageState extends State<MenuPage> {
                 ),
                 const SizedBox(height: 10),
                 Stack(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.topCenter,
+                  clipBehavior: Clip.none,
                   children: [
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20,),
@@ -60,7 +61,7 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                         ],
                       ),
-                      height: 270,
+                      height: 255,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -147,60 +148,77 @@ class _MenuPageState extends State<MenuPage> {
                         ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * 0.57,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 56, 106, 237),
-                        border: Border.all(
-                          width: 2.0,
-                          color: const Color.fromARGB(255, 56, 106, 237),
+                    Positioned(
+                      bottom: -30,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 60,
+                        width: MediaQuery.of(context).size.width * 0.57,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 56, 106, 237),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              offset: Offset(0, 5)
+                            ),
+                            BoxShadow(
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                              color: Colors.white,
+                              offset: Offset(-5, 0)
+                            ),
+                            BoxShadow(
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                              color: Colors.white,
+                              offset: Offset(5, 0)
+                            ),
+                          ]
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      ),
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(3, (index) {
-                          Color activeColor = const Color.fromARGB(255, 32, 81, 203);
-                          Color inactiveColor = const Color.fromARGB(255, 56, 106, 237);
-                          return TextButton(
-                            onPressed: () {
-                              setState(() {
-                                activeIndex = index;
-                              });
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: activeIndex == index ? activeColor : inactiveColor,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(3, (index) {
+                            Color activeColor = const Color.fromARGB(255, 32, 81, 203);
+                            Color inactiveColor = const Color.fromARGB(255, 56, 106, 237);
+                            return TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  activeIndex = index;
+                                });
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: activeIndex == index ? activeColor : inactiveColor,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  index == 0 ? '52' : index == 1 ? '250' : '4.5K',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    index == 0 ? '52' : index == 1 ? '250' : '4.5K',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  index == 0 ? 'Posts' : index == 1 ? 'Following' : 'Followers',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
+                                  Text(
+                                    index == 0 ? 'Posts' : index == 1 ? 'Following' : 'Followers',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                      ),
                     ),
                   ],
                 ),
