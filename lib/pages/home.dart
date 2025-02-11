@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blog_club/constants/stories_list.dart';
-import 'package:blog_club/components/latest_news.dart';
+import 'package:blog_club/custom_widgets/latest_news.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

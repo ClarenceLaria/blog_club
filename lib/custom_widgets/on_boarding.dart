@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:blog_club/constants/on_boarding_data.dart';
-import 'package:blog_club/components/landing.dart';
+import 'package:blog_club/custom_widgets/landing.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});

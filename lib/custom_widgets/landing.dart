@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blog_club/components/auth_form.dart';
+import 'package:blog_club/custom_widgets/auth_form.dart';
 
 class Landing extends StatefulWidget {
   const Landing({super.key});

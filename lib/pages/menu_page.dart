@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:blog_club/custom_widgets/my_posts.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -17,14 +18,15 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build (BuildContext context){
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255,223,229,236),
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
-          child: FractionallySizedBox(
-            widthFactor: 0.8,
-            child: Column(
-              children: [
-                Row(
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
@@ -42,26 +44,23 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Stack(
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Stack(
                   alignment: Alignment.topCenter,
                   clipBehavior: Clip.none,
                   children: [
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20,),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 5,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
                       ),
-                      height: 255,
+                      height: 250,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -121,7 +120,7 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             child: const Column(
@@ -149,10 +148,10 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                     ),
                     Positioned(
-                      bottom: -30,
+                      bottom: -25,
                       child: Container(
                         alignment: Alignment.center,
-                        height: 60,
+                        height: 50,
                         width: MediaQuery.of(context).size.width * 0.57,
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 56, 106, 237),
@@ -222,8 +221,10 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 50),
+              const MyPost(),
+            ],
           ),
         ), 
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:blog_club/components/navigation_bar.dart';
+import 'package:blog_club/custom_widgets/navigation_bar.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({super.key, required this.onOpen});
