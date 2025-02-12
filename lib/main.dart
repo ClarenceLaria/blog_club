@@ -1,12 +1,15 @@
 import 'package:blog_club/custom_widgets/on_boarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async{
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Future.delayed(const Duration(seconds: 5),);
   FlutterNativeSplash.remove();
+  await Hive.initFlutter();
+  Hive.openBox('userBox');
   runApp(const MyApp());
 }
 

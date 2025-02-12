@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -22,8 +25,9 @@ class _AddPageState extends State<AddPage> {
   ];
 
   final QuillController _controller = QuillController.basic();
-
+  final TextEditingController _titleController = TextEditingController();
   File? _image;
+  String? _selectedCategory;
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -53,6 +57,31 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
+    Future<String> saveImage(File imageFile) async {
+      final directory = await getApplicationDocumentsDirectory();
+      final String imagePath = '${directory.path}/user_image.jpg';
+      await imageFile.copy(imagePath);
+      return imagePath;
+    }
+
+  //Hive implementation
+  Future<void> saveData() async {
+    final box = Hive.box('userBox');
+    String title = _titleController.text;
+    String description = _controller.document.toPlainText();
+    String category = _selectedCategory ?? 'No Category';
+    String imagePath = _image != null ? await saveImage(_image!) : '';
+
+    box.put('title', title);
+    box.put('description', description);
+    box.put('category', category);
+    box.put('imagePath', imagePath);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Data Saved Successfully')),
+    );
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -75,7 +104,7 @@ class _AddPageState extends State<AddPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {}, 
+                        onPressed: saveData, 
                         icon: const Icon(
                           Icons.save_alt,
                         ),
@@ -88,6 +117,7 @@ class _AddPageState extends State<AddPage> {
                       child: Column(
                         children: [
                           TextFormField(
+                            controller: _titleController,
                             decoration: InputDecoration(
                               labelText: 'Title',
                               hintText: 'Enter a Blog Title',
@@ -108,7 +138,11 @@ class _AddPageState extends State<AddPage> {
                           const SizedBox(height: 10),
                           DropdownButtonFormField(
                             items: items, 
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCategory = value!;
+                              });
+                            },
                             decoration: const InputDecoration(
                               labelText: 'Category',
                               hintText: 'Select a Category',
