@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -20,6 +22,36 @@ class _AddPageState extends State<AddPage> {
   ];
 
   final QuillController _controller = QuillController.basic();
+
+  File? _image;
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: await showDialog<ImageSource>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Choose an option'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, ImageSource.camera),
+              child: const Text('Camera'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, ImageSource.gallery),
+              child: const Text('Gallery'),
+            ),
+          ],
+        ),
+      ) ?? ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context){
@@ -56,14 +88,23 @@ class _AddPageState extends State<AddPage> {
                       child: Column(
                         children: [
                           TextFormField(
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Title',
                               hintText: 'Enter a Blog Title',
                               // border: OutlineInputBorder(),
+                              suffix: IconButton(
+                                onPressed: pickImage, 
+                                icon: const Icon(Icons.image),
+                              ),
                             ),
                             maxLength: 100,
                             maxLines: null,
                           ),
+                          const SizedBox(height: 10),
+                          //Image
+                          _image != null
+                            ? Image.file(_image!, height: 150, width: 150,) // Displays the selected image
+                            : const Text("No image selected"),
                           const SizedBox(height: 10),
                           DropdownButtonFormField(
                             items: items, 
@@ -105,8 +146,7 @@ class _AddPageState extends State<AddPage> {
                               // focusNode: FocusNode(),
                               configurations: const QuillEditorConfigurations(),
                             ),
-                          )
-                          
+                          ),
                         ],
                       ),
                     ),
