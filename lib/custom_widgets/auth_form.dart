@@ -25,6 +25,23 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+  String? userName, email, password, confirmPassword;
+
+  void onSaved(String key, String? value) {
+    setState(() {
+      if (key == "userName") {
+        userName = value;
+      } else if (key == "email") {
+        email = value;
+      } else if (key == "password") {
+        password = value;
+      } else if (key == "confirmPassword") {
+        confirmPassword = value;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
@@ -77,7 +94,7 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
-                    child: selectedTab == 'Login' ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields(togglePasswordVisibility, passwordVisible, context)) : Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields(togglePasswordVisibility, passwordVisible)),
+                    child: selectedTab == 'Login' ? Form(key: _formKey, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildLoginFields(togglePasswordVisibility, passwordVisible, context, _formKey, onSaved))) : Form(key: _formKey, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _buildSignUpFields(togglePasswordVisibility, passwordVisible, _formKey, onSaved, confirmPassword))),
                   )
                 ),
               ),
@@ -88,7 +105,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 }
 
-List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool passwordVisible, BuildContext context) {
+List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool passwordVisible, BuildContext context, GlobalKey<FormState> formKey, void Function(String, String?) onSaved) {
   return [
     const Text(
       'Welcome back',
@@ -99,12 +116,19 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
     ),
     const SizedBox(height: 20),
-    const TextField(
-      decoration: InputDecoration(labelText: 'Username'),
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    TextFormField(
+      decoration: const InputDecoration(labelText: 'Username'),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your username';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('userName', value),
     ),
     const SizedBox(height: 10),
-    TextField(
+    TextFormField(
       obscureText: !passwordVisible,
       decoration: InputDecoration(
         labelText: 'Password',
@@ -117,6 +141,13 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
         ),
       ),
       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('password', value),
     ),
     const SizedBox(height: 30),
     SizedBox(
@@ -150,7 +181,11 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
           ),
           TextButton(
-            onPressed: () {}, 
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                // Process data
+              }
+            }, 
             style: TextButton.styleFrom(
               padding: const EdgeInsets.only(left: 5.0),
             ),
@@ -188,7 +223,7 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
   ];
 }
 
-List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool passwordVisible) {
+List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool passwordVisible, GlobalKey<FormState> formKey, void Function(String, String?) onSaved, String? confirmPassword) {
   return [
     const Text(
       'Sign Up',
@@ -198,18 +233,39 @@ List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool p
       'Create an account',
       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
     ),
-    const SizedBox(height: 20),
-    const TextField(
-      decoration: InputDecoration(labelText: 'Full Name'),
+    const SizedBox(height: 10),
+    TextFormField(
+      decoration: const InputDecoration(
+        labelText: 'Full Name',
+        hintText: 'Full Name',
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your full name';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('userName', value),
     ),
     const SizedBox(height: 10),
-    const TextField(
-      decoration: InputDecoration(labelText: 'Email'),
+    TextFormField(
+      decoration: const InputDecoration(
+        labelText: 'Email',
+        hintText: 'Email',
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your email';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('email', value),
     ),
     const SizedBox(height: 10),
-    TextField(
+    TextFormField(
       decoration: InputDecoration(
         labelText: 'Password',
+        hintText: 'Password',
         suffixIcon: TextButton(
           onPressed: togglePasswordVisibility, 
           child: Text(
@@ -219,11 +275,19 @@ List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool p
         ),
       ),
       obscureText: !passwordVisible,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('password', value),
     ),
     const SizedBox(height: 10),
-    TextField(
+    TextFormField(
       decoration: InputDecoration(
         labelText: 'Confirm Password',
+        hintText: 'Confirm Password',
         suffixIcon: TextButton(
           onPressed: togglePasswordVisibility, 
           child: Text(
@@ -233,12 +297,25 @@ List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool p
         ),
       ),
       obscureText: !passwordVisible,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please confirm your password';
+        }
+        return null;
+      },
+      onSaved: (value) => onSaved('confirmPassword', value),
     ),
     const SizedBox(height: 30),
     SizedBox(
       width: double.infinity,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            formKey.currentState!.save();
+            print("Form Data Saved");
+            print('Confirm Password: $confirmPassword');
+          }
+        },
         style: TextButton.styleFrom(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))
