@@ -312,8 +312,6 @@ List<Widget> _buildSignUpFields(void Function() togglePasswordVisibility, bool p
         onPressed: () {
           if (formKey.currentState!.validate()) {
             formKey.currentState!.save();
-            print("Form Data Saved");
-            print('Confirm Password: $confirmPassword');
           }
         },
         style: TextButton.styleFrom(

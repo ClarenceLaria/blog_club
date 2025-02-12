@@ -1,3 +1,4 @@
+import 'package:blog_club/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:blog_club/pages/home.dart';
 import 'package:blog_club/pages/articles.dart';
@@ -23,8 +24,8 @@ class _NavigationBarState extends State<NavigationBarWidget> {
     const Center(child: HomePage()),
     const Center(child: Articles()),
     const Center(child: AddPage()),
-    const Center(child: Text('Search Page', style: TextStyle(fontSize: 24))),
     const Center(child: MenuPage()),
+    const Center(child: SettingsPage()),
   ];
   
   void _onItemTapped(int index) {
@@ -59,12 +60,12 @@ class _NavigationBarState extends State<NavigationBarWidget> {
             label: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.verified_user_outlined),
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
