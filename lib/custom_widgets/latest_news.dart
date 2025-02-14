@@ -22,7 +22,9 @@ class _LatestNewsState extends State<LatestNews> {
 
   Future<void> loadArticles() async {
     final box = Hive.box('userBox');
-    final List<dynamic>? storedArticles = box.get('articles', defaultValue: []);
+    final storedArticles = box.get('articles', defaultValue: []);
+    print('Retrieved articles: $storedArticles');
+    // final List<dynamic>? storedArticles = box.get('articles', defaultValue: []);
 
     setState(() {
       articles = storedArticles?.cast<Map<String, dynamic>>() ?? [];
@@ -48,7 +50,7 @@ class _LatestNewsState extends State<LatestNews> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {}, 
+                  onPressed: loadArticles, 
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.only(left: 5.0),
                   ),
@@ -62,6 +64,8 @@ class _LatestNewsState extends State<LatestNews> {
             articles.isEmpty 
               ? const Center(child: Text("No saved articles"))
               : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: articles.length,
                   itemBuilder: (context, index) {
                     final article = articles[index];

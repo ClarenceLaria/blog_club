@@ -2,14 +2,19 @@ import 'package:blog_club/custom_widgets/on_boarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async{
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Future.delayed(const Duration(seconds: 5),);
   FlutterNativeSplash.remove();
-  await Hive.initFlutter();
-  Hive.openBox('userBox');
+  // Flutter hive initialization
+  WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  // Hive.init(dir.path);
+  await Hive.initFlutter(dir.path);
+  await Hive.openBox('userBox');
   runApp(const MyApp());
 }
 

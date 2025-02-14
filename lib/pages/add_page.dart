@@ -67,15 +67,20 @@ class _AddPageState extends State<AddPage> {
   //Hive implementation
   Future<void> saveData() async {
     final box = Hive.box('userBox');
+    List<dynamic> storedArticles = List.from(box.get('articles', defaultValue: []));
+
     String title = _titleController.text;
     String description = _controller.document.toPlainText();
     String category = _selectedCategory ?? 'No Category';
     String imagePath = _image != null ? await saveImage(_image!) : '';
 
-    box.put('title', title);
-    box.put('description', description);
-    box.put('category', category);
-    box.put('imagePath', imagePath);
+    storedArticles.add({
+      'title': title,
+      'description': description,
+      'category': category,
+      'imagePath': imagePath,
+    });
+    await box.put('articles', storedArticles);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Data Saved Successfully')),
