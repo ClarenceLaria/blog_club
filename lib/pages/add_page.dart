@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -24,6 +25,8 @@ class _AddPageState extends State<AddPage> {
     DropdownMenuItem(value: 'Category2', child: Text('Category2')),
     DropdownMenuItem(value: 'Category3', child: Text('Category3')),
   ];
+
+  var uuid = Uuid();
 
   final QuillController _controller = QuillController.basic();
   final TextEditingController _titleController = TextEditingController();
@@ -65,7 +68,7 @@ class _AddPageState extends State<AddPage> {
       final String uniqueFileName = 'user_image_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(1000)}.jpg';
 
       final String imagePath = '${directory.path}/$uniqueFileName';
-      
+
       await imageFile.copy(imagePath);
       return imagePath;
     }
@@ -75,12 +78,14 @@ class _AddPageState extends State<AddPage> {
     final box = Hive.box('userBox');
     List<dynamic> storedArticles = List.from(box.get('articles', defaultValue: []));
 
+    String id = uuid.v4();
     String title = _titleController.text;
     String description = _controller.document.toPlainText();
     String category = _selectedCategory ?? 'No Category';
     String imagePath = _image != null ? await saveImage(_image!) : '';
 
     storedArticles.add({
+      'id': id,
       'title': title,
       'description': description,
       'category': category,
