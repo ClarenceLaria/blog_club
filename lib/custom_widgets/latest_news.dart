@@ -14,20 +14,26 @@ class _LatestNewsState extends State<LatestNews> {
 
   List<Map<String, dynamic>> articles = [];
 
+  Future<void> loadArticles() async {
+  try {
+    final box = Hive.box('userBox');
+    List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+    print('Retrieved articles: $storedArticles'); 
+
+    setState(() {
+      articles = storedArticles.map((item) => Map<String, dynamic>.from(item)).toList();
+    });
+  } catch (e, stacktrace) {
+    print("Error loading articles: $e");
+    print(stacktrace);
+  }
+}
+
   @override
   void initState() {
     super.initState();
-    loadArticles();
-  }
-
-  Future<void> loadArticles() async {
-    final box = Hive.box('userBox');
-    final storedArticles = box.get('articles', defaultValue: []);
-    print('Retrieved articles: $storedArticles');
-    // final List<dynamic>? storedArticles = box.get('articles', defaultValue: []);
-
-    setState(() {
-      articles = storedArticles?.cast<Map<String, dynamic>>() ?? [];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadArticles();
     });
   }
 
@@ -61,6 +67,61 @@ class _LatestNewsState extends State<LatestNews> {
                 ),
               ],
             ),
+            // articles.isEmpty 
+            //   ? const Center(child: Text("No saved articles"))
+            //   : ListView.builder(
+            //       shrinkWrap: true,
+            //       physics: const NeverScrollableScrollPhysics(),
+            //       itemCount: articles.length,
+            //       itemBuilder: (context, index) {
+            //         final article = articles[index];
+
+            //         return Card(
+            //           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //           child: ListTile(
+            //             contentPadding: const EdgeInsets.all(10),
+            //             leading: article['imagePath'] != null && File(article['imagePath']).existsSync()
+            //                 ? ClipRRect(
+            //                     borderRadius: BorderRadius.circular(10),
+            //                     child: Image.file(
+            //                       File(article['imagePath']),
+            //                       height: 150,
+            //                       width: 100,
+            //                       fit: BoxFit.cover,
+            //                     ),
+            //                   )
+            //                 : const Icon(Icons.image_not_supported, size: 50),
+            //             title: Text(
+            //               article['title'] ?? "No Title",
+            //               style: const TextStyle(fontWeight: FontWeight.bold),
+            //             ),
+            //             subtitle: Text(
+            //               article['description'] ?? "No Description",
+            //               maxLines: 2,
+            //               overflow: TextOverflow.ellipsis,
+            //             ),
+            //             trailing: IconButton(
+            //               icon: const Icon(Icons.delete, color: Colors.red),
+            //               onPressed: () async {
+            //                 // Remove the article from Hive and update the list
+            //                 final box = Hive.box('userBox');
+            //                 List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+            //                 storedArticles.removeAt(index);
+            //                 await box.put('articles', storedArticles);
+
+            //                 setState(() {
+            //                   articles.removeAt(index);
+            //                 });
+            //               },
+            //             ),
+            //             onTap: () {
+            //               // Navigate to article details page (optional)
+            //             },
+            //           ),
+            //         );
+            //       },
+            //     ),
             articles.isEmpty 
               ? const Center(child: Text("No saved articles"))
               : ListView.builder(
@@ -70,242 +131,105 @@ class _LatestNewsState extends State<LatestNews> {
                   itemBuilder: (context, index) {
                     final article = articles[index];
 
-                    return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(10),
-                        leading: article['imagePath'] != null && File(article['imagePath']).existsSync()
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.file(
-                                  File(article['imagePath']),
-                                  height: 50,
-                                  width: 50,
-                                  fit: BoxFit.cover,
+                  return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    children: [
+                      article['imagePath'] != null && File(article['imagePath']).existsSync() ?
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.file(
+                          File(article['imagePath']),
+                          height: 150,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ) 
+                      : const Icon(Icons.image_not_supported, size: 50),
+                      const SizedBox(width: 20,),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              article['category'] ?? "No Category",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(255,56,106,237),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 10,),
+                            Text(
+                              article['title'] ?? "No Title",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {}, 
+                                      icon: const Icon(
+                                        Icons.thumb_up_alt_outlined,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '2.1k',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )
-                            : const Icon(Icons.image_not_supported, size: 50),
-                        title: Text(
-                          article['title'] ?? "No Title",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {}, 
+                                      icon: const Icon(
+                                        Icons.timelapse_outlined,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '1hr ago',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {}, 
+                                      icon: const Icon(
+                                        size: 18,
+                                        Icons.bookmark_border_outlined,
+                                        color: Color.fromARGB(237,56,106,255),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        subtitle: Text(
-                          article['description'] ?? "No Description",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () async {
-                            // Remove the article from Hive and update the list
-                            final box = Hive.box('userBox');
-                            List<dynamic> storedArticles = box.get('articles', defaultValue: []);
-                            storedArticles.removeAt(index);
-                            await box.put('articles', storedArticles);
-
-                            setState(() {
-                              articles.removeAt(index);
-                            });
-                          },
-                        ),
-                        onTap: () {
-                          // Navigate to article details page (optional)
-                        },
                       ),
-                    );
-                  },
-                ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-            //   child: Row(
-            //     children: [
-            //       ClipRRect(
-            //         borderRadius: BorderRadius.circular(20),
-            //         child: const Image(
-            //           image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
-            //           height: 150,
-            //           width: 100,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //       const SizedBox(width: 20,),
-            //       Expanded(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const Text(
-            //               'BIG DATA',
-            //               style: TextStyle(
-            //                 fontSize: 14,
-            //                 color: Color.fromARGB(255,56,106,237),
-            //                 fontWeight: FontWeight.w500,
-            //               ),
-            //             ),
-            //             const SizedBox(height: 10,),
-            //             const Text(
-            //               'Why Big Data Needs Thick Data?',
-            //               style: TextStyle(
-            //                 fontSize: 14,
-            //                 color: Colors.black,
-            //               ),
-            //             ),
-            //             const SizedBox(height: 10,),
-            //             Row(
-            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Column(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         Icons.thumb_up_alt_outlined,
-            //                         size: 18,
-            //                       ),
-            //                     ),
-            //                     const Text(
-            //                       '2.1k',
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         color: Colors.black,
-            //                       ),
-            //                     )
-            //                   ],
-            //                 ),
-            //                 Column(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         Icons.timelapse_outlined,
-            //                         size: 18,
-            //                       ),
-            //                     ),
-            //                     const Text(
-            //                       '1hr ago',
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         color: Colors.black,
-            //                       ),
-            //                     )
-            //                   ],
-            //                 ),
-            //                 Row(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         size: 18,
-            //                         Icons.bookmark_border_outlined,
-            //                         color: Color.fromARGB(237,56,106,255),
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-            //   child: Row(
-            //     children: [
-            //       ClipRRect(
-            //         borderRadius: BorderRadius.circular(20),
-            //         child: const Image(
-            //           image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
-            //           height: 150,
-            //           width: 100,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //       const SizedBox(width: 20,),
-            //       Expanded(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const Text(
-            //               'BIG DATA',
-            //               style: TextStyle(
-            //                 fontSize: 14,
-            //                 color: Color.fromARGB(237,56,106,255),
-            //                 fontWeight: FontWeight.w500,
-            //               ),
-            //             ),
-            //             const SizedBox(height: 10,),
-            //             const Text(
-            //               'Why Big Data Needs Thick Data?',
-            //               style: TextStyle(
-            //                 fontSize: 14,
-            //                 color: Colors.black,
-            //               ),
-            //             ),
-            //             const SizedBox(height: 10,),
-            //             Row(
-            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Column(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         Icons.thumb_up_alt_outlined,
-            //                         size: 18,
-            //                       ),
-            //                     ),
-            //                     const Text(
-            //                       '2.1k',
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         color: Colors.black,
-            //                       ),
-            //                     )
-            //                   ],
-            //                 ),
-            //                 Column(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         Icons.timelapse_outlined,
-            //                         size: 18,
-            //                       ),
-            //                     ),
-            //                     const Text(
-            //                       '1hr ago',
-            //                       style: TextStyle(
-            //                         fontSize: 12,
-            //                         color: Colors.black,
-            //                       ),
-            //                     )
-            //                   ],
-            //                 ),
-            //                 Row(
-            //                   children: [
-            //                     IconButton(
-            //                       onPressed: () {}, 
-            //                       icon: const Icon(
-            //                         size: 18,
-            //                         Icons.bookmark_border_outlined,
-            //                         color: Color.fromARGB(237,56,106,255),
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       )
