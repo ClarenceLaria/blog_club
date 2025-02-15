@@ -56,7 +56,7 @@ class _LatestNewsState extends State<LatestNews> {
                   ),
                 ),
                 TextButton(
-                  onPressed: loadArticles, 
+                  onPressed: () {}, 
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.only(left: 5.0),
                   ),
@@ -67,61 +67,6 @@ class _LatestNewsState extends State<LatestNews> {
                 ),
               ],
             ),
-            // articles.isEmpty 
-            //   ? const Center(child: Text("No saved articles"))
-            //   : ListView.builder(
-            //       shrinkWrap: true,
-            //       physics: const NeverScrollableScrollPhysics(),
-            //       itemCount: articles.length,
-            //       itemBuilder: (context, index) {
-            //         final article = articles[index];
-
-            //         return Card(
-            //           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            //           child: ListTile(
-            //             contentPadding: const EdgeInsets.all(10),
-            //             leading: article['imagePath'] != null && File(article['imagePath']).existsSync()
-            //                 ? ClipRRect(
-            //                     borderRadius: BorderRadius.circular(10),
-            //                     child: Image.file(
-            //                       File(article['imagePath']),
-            //                       height: 150,
-            //                       width: 100,
-            //                       fit: BoxFit.cover,
-            //                     ),
-            //                   )
-            //                 : const Icon(Icons.image_not_supported, size: 50),
-            //             title: Text(
-            //               article['title'] ?? "No Title",
-            //               style: const TextStyle(fontWeight: FontWeight.bold),
-            //             ),
-            //             subtitle: Text(
-            //               article['description'] ?? "No Description",
-            //               maxLines: 2,
-            //               overflow: TextOverflow.ellipsis,
-            //             ),
-            //             trailing: IconButton(
-            //               icon: const Icon(Icons.delete, color: Colors.red),
-            //               onPressed: () async {
-            //                 // Remove the article from Hive and update the list
-            //                 final box = Hive.box('userBox');
-            //                 List<dynamic> storedArticles = box.get('articles', defaultValue: []);
-            //                 storedArticles.removeAt(index);
-            //                 await box.put('articles', storedArticles);
-
-            //                 setState(() {
-            //                   articles.removeAt(index);
-            //                 });
-            //               },
-            //             ),
-            //             onTap: () {
-            //               // Navigate to article details page (optional)
-            //             },
-            //           ),
-            //         );
-            //       },
-            //     ),
             articles.isEmpty 
               ? const Center(child: Text("No saved articles"))
               : ListView.builder(
@@ -131,103 +76,105 @@ class _LatestNewsState extends State<LatestNews> {
                   itemBuilder: (context, index) {
                     final article = articles[index];
 
-                  return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    children: [
-                      article['imagePath'] != null && File(article['imagePath']).existsSync() ?
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(
-                          File(article['imagePath']),
-                          height: 150,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      ) 
-                      : const Icon(Icons.image_not_supported, size: 50),
-                      const SizedBox(width: 20,),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              article['category'] ?? "No Category",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color.fromARGB(255,56,106,237),
-                                fontWeight: FontWeight.w500,
+                  return Card(
+                    child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Row(
+                      children: [
+                        article['imagePath'] != null && File(article['imagePath']).existsSync() ?
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.file(
+                            File(article['imagePath']),
+                            height: 150,
+                            width: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        ) 
+                        : const Icon(Icons.image_not_supported, size: 50),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                article['category'] ?? "No Category",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(255,56,106,237),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10,),
-                            Text(
-                              article['title'] ?? "No Title",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
+                              const SizedBox(height: 10,),
+                              Text(
+                                article['title'] ?? "No Title",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {}, 
-                                      icon: const Icon(
-                                        Icons.thumb_up_alt_outlined,
-                                        size: 18,
+                              const SizedBox(height: 10,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {}, 
+                                        icon: const Icon(
+                                          Icons.thumb_up_alt_outlined,
+                                          size: 18,
+                                        ),
                                       ),
-                                    ),
-                                    const Text(
-                                      '2.1k',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
+                                      const Text(
+                                        '2.1k',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {}, 
+                                        icon: const Icon(
+                                          Icons.timelapse_outlined,
+                                          size: 18,
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {}, 
-                                      icon: const Icon(
-                                        Icons.timelapse_outlined,
-                                        size: 18,
+                                      const Text(
+                                        '1hr ago',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {}, 
+                                        icon: const Icon(
+                                          size: 18,
+                                          Icons.bookmark_border_outlined,
+                                          color: Color.fromARGB(237,56,106,255),
+                                        ),
                                       ),
-                                    ),
-                                    const Text(
-                                      '1hr ago',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {}, 
-                                      icon: const Icon(
-                                        size: 18,
-                                        Icons.bookmark_border_outlined,
-                                        color: Color.fromARGB(237,56,106,255),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                      ],
+                    ),
+                                    ),
+                  );
               },
             ),
           ],

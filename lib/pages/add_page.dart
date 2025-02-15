@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,7 +60,12 @@ class _AddPageState extends State<AddPage> {
 
     Future<String> saveImage(File imageFile) async {
       final directory = await getApplicationDocumentsDirectory();
-      final String imagePath = '${directory.path}/user_image.jpg';
+
+      // Generate a unique name for the image using timestamps + random number
+      final String uniqueFileName = 'user_image_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(1000)}.jpg';
+
+      final String imagePath = '${directory.path}/$uniqueFileName';
+      
       await imageFile.copy(imagePath);
       return imagePath;
     }
