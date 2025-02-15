@@ -86,6 +86,7 @@ class _AddPageState extends State<AddPage> {
 
     storedArticles.add({
       'id': id,
+      'createdAt': DateTime.now().toIso8601String(),
       'title': title,
       'description': description,
       'category': category,
