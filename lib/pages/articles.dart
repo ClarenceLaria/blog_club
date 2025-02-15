@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 class Articles extends StatefulWidget {
-  const Articles({super.key});
+  const Articles({super.key, required this.article});
+
+  final Map<String, dynamic> article;
 
   @override
   State<Articles> createState() => _ArticlesState();
@@ -11,6 +14,7 @@ class Articles extends StatefulWidget {
 
 class _ArticlesState extends State<Articles> {
   String title = '';
+  String createdAt = '';
   String description = '';
   String category = '';
   String? imagePath;
@@ -21,13 +25,26 @@ class _ArticlesState extends State<Articles> {
     loadData();
   }
 
+  String formatDate(String? dateString) {
+  if (dateString == null || dateString.isEmpty) {
+    return 'Unknown Date';
+  }
+  try {
+    DateTime date = DateTime.parse(dateString);
+    return DateFormat('MMMM d yyyy').format(date); // "March 10 2024"
+  } catch (e) {
+    return 'Unknown Date';
+  }
+  }
+
   Future<void> loadData() async {
     final box = Hive.box('userBox');
     setState(() {
-      title = box.get('title', defaultValue: 'No Title');
-      description = box.get('description', defaultValue: 'No Description');
-      category = box.get('category', defaultValue: 'No Category');
-      imagePath = box.get('imagePath'); 
+      title = widget.article['title'] ?? box.get('title', defaultValue: 'No Title');
+      createdAt = formatDate(widget.article['createdAt'] ?? box.get('createdAt', defaultValue: 'Unknown Date'));
+      description = widget.article['description'] ?? box.get('description', defaultValue: 'No Description');
+      category = widget.article['category'] ?? box.get('category', defaultValue: 'No Category');
+      imagePath = widget.article['imagePath'] ?? box.get('imagePath');
     });
   }
 
@@ -49,7 +66,7 @@ class _ArticlesState extends State<Articles> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pop(context), // Fixed back button
                           icon: const Icon(Icons.arrow_back_ios),
                         ),
                         IconButton(
@@ -72,20 +89,23 @@ class _ArticlesState extends State<Articles> {
                       children: [
                         Row(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: const Image(
-                                image: AssetImage('assets/images/face4.webp'),
-                                height: 40,
-                                width: 40,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            if (imagePath != null && File(imagePath!).existsSync()) // Fixed image display
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  File(imagePath!),
+                                  height: 40,
+                                  width: 40,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            else
+                              const Icon(Icons.image_not_supported, size: 40),
                             const SizedBox(width: 15),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Jane Doe',
                                   style: TextStyle(
                                     fontSize: 14,
@@ -93,8 +113,8 @@ class _ArticlesState extends State<Articles> {
                                   ),
                                 ),
                                 Text(
-                                  'March 16, 2021',
-                                  style: TextStyle(
+                                  createdAt,
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
                                   ),
@@ -130,7 +150,7 @@ class _ArticlesState extends State<Articles> {
               Expanded(
                 child: ListView(
                   children: [
-                    if (imagePath != null && File(imagePath!).existsSync())
+                    if (imagePath != null && File(imagePath!).existsSync()) // Fixing the article image
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
@@ -142,9 +162,7 @@ class _ArticlesState extends State<Articles> {
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-                      )
-                    else
-                      const SizedBox(), // Placeholder if no image is found
+                      ),
                     const SizedBox(height: 20),
                     FractionallySizedBox(
                       widthFactor: 0.8,

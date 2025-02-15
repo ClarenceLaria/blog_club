@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
+import 'package:blog_club/pages/articles.dart';
 
 class LatestNews extends StatefulWidget{
   const LatestNews({super.key});
@@ -96,104 +97,114 @@ class _LatestNewsState extends State<LatestNews> {
                   itemBuilder: (context, index) {
                     final article = articles[index];
 
-                  return Card(
-                    child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Row(
-                      children: [
-                        article['imagePath'] != null && File(article['imagePath']).existsSync() ?
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.file(
-                            File(article['imagePath']),
-                            height: 150,
-                            width: 100,
-                            fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Articles(article: article),
                           ),
-                        ) 
-                        : const Icon(Icons.image_not_supported, size: 50),
-                        const SizedBox(width: 10,),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                article['category'] ?? "No Category",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255,56,106,237),
-                                  fontWeight: FontWeight.w500,
+                        );
+                      },
+                    child: Card(
+                      child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                      child: Row(
+                        children: [
+                          article['imagePath'] != null && File(article['imagePath']).existsSync() ?
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.file(
+                              File(article['imagePath']),
+                              height: 150,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ) 
+                          : const Icon(Icons.image_not_supported, size: 50),
+                          const SizedBox(width: 10,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  article['category'] ?? "No Category",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Color.fromARGB(255,56,106,237),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10,),
-                              Text(
-                                article['title'] ?? "No Title",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
+                                const SizedBox(height: 10,),
+                                Text(
+                                  article['title'] ?? "No Title",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.thumb_up_alt_outlined,
-                                          size: 18,
+                                const SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {}, 
+                                          icon: const Icon(
+                                            Icons.thumb_up_alt_outlined,
+                                            size: 18,
+                                          ),
                                         ),
-                                      ),
-                                      const Text(
-                                        '2.1k',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.timelapse_outlined,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      Text(
-                                        formatTimeAgo(article['createdAt']),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          size: 18,
-                                          Icons.bookmark_border_outlined,
-                                          color: Color.fromARGB(237,56,106,255),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                                        const Text(
+                                          '2.1k',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
                                     ),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {}, 
+                                          icon: const Icon(
+                                            Icons.timelapse_outlined,
+                                            size: 18,
+                                          ),
+                                        ),
+                                        Text(
+                                          formatTimeAgo(article['createdAt']),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {}, 
+                                          icon: const Icon(
+                                            size: 18,
+                                            Icons.bookmark_border_outlined,
+                                            color: Color.fromARGB(237,56,106,255),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                                      ),
+                    ),
                   );
               },
             ),

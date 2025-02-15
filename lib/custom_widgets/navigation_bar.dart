@@ -22,7 +22,7 @@ class _NavigationBarState extends State<NavigationBarWidget> {
   // List of pages corresponding to each tab
   final List<Widget> _pages = [
     const Center(child: HomePage()),
-    const Center(child: Articles()),
+    const Center(child: Articles(article: {},)),
     const Center(child: AddPage()),
     const Center(child: MenuPage()),
     const Center(child: SettingsPage()),
