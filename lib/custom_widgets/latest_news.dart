@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 class LatestNews extends StatefulWidget{
   const LatestNews({super.key});
@@ -28,6 +29,25 @@ class _LatestNewsState extends State<LatestNews> {
     print(stacktrace);
   }
 }
+
+  String formatTimeAgo(String? createdAt) {
+    if (createdAt == null) return "Unknown";
+
+    DateTime createdTime = DateTime.parse(createdAt);
+    Duration difference = DateTime.now().difference(createdTime);
+
+    if (difference.inDays >= 8) {
+      return DateFormat('dd/MM/yyyy').format(createdTime);
+    } else if (difference.inDays >= 1) {
+      return "${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago";
+    } else if (difference.inHours >= 1) {
+      return "${difference.inHours} hr${difference.inHours > 1 ? 's' : ''} ago";
+    } else if (difference.inMinutes >= 1) {
+      return "${difference.inMinutes} min${difference.inMinutes > 1 ? 's' : ''} ago";
+    } else {
+      return "just now";
+    }
+  }
 
   @override
   void initState() {
@@ -145,9 +165,9 @@ class _LatestNewsState extends State<LatestNews> {
                                           size: 18,
                                         ),
                                       ),
-                                      const Text(
-                                        '1hr ago',
-                                        style: TextStyle(
+                                      Text(
+                                        formatTimeAgo(article['createdAt']),
+                                        style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.black,
                                         ),
