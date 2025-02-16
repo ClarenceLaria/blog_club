@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
             ),
             // const SizedBox(height: 20,),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.63,
+              height: MediaQuery.of(context).size.height * 0.66,
               child: ListView(
                 children: [
                   SizedBox(
@@ -256,7 +256,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )
-            
           ],
         ),
       ),
