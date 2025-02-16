@@ -32,7 +32,7 @@ class _LatestNewsState extends State<LatestNews> {
 }
 
   String formatTimeAgo(String? createdAt) {
-    if (createdAt == null) return "Unknown";
+    if (createdAt == null) return "Unknown time";
 
     DateTime createdTime = DateTime.parse(createdAt);
     Duration difference = DateTime.now().difference(createdTime);
@@ -63,7 +63,7 @@ class _LatestNewsState extends State<LatestNews> {
     return Container(
       alignment: Alignment.center,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: MediaQuery.of(context).size.width * 0.9,
         child: Column(
           children: [
             Row(

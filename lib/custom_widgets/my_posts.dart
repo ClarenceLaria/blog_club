@@ -13,7 +13,7 @@ class MyPost extends StatelessWidget {
         borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
       ),
       child: FractionallySizedBox(
-        widthFactor: 0.8,
+        widthFactor: 0.9,
         child: Column(
           children: [
             Row(

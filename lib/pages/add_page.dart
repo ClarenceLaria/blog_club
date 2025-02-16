@@ -106,7 +106,7 @@ class _AddPageState extends State<AddPage> {
         child: Container(
           alignment: Alignment.center,
           child: FractionallySizedBox(
-            widthFactor: 0.8,
+            widthFactor: 0.9,
             child: Expanded(
               child: Column(
                 children: [

@@ -51,6 +51,15 @@ class _ArticlesState extends State<Articles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Article'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
@@ -58,23 +67,23 @@ class _ArticlesState extends State<Articles> {
           child: Column(
             children: [
               FractionallySizedBox(
-                widthFactor: 0.8,
+                widthFactor: 0.9,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.pop(context), // Fixed back button
-                          icon: const Icon(Icons.arrow_back_ios),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_horiz),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     IconButton(
+                    //       onPressed: () => Navigator.pop(context), // Fixed back button
+                    //       icon: const Icon(Icons.arrow_back_ios),
+                    //     ),
+                    //     IconButton(
+                    //       onPressed: () {},
+                    //       icon: const Icon(Icons.more_horiz),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 20),
                     Text(
                       title,
@@ -165,7 +174,7 @@ class _ArticlesState extends State<Articles> {
                       ),
                     const SizedBox(height: 20),
                     FractionallySizedBox(
-                      widthFactor: 0.8,
+                      widthFactor: 0.9,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

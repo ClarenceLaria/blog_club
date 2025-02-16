@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             FractionallySizedBox(
-              widthFactor: 0.8,
+              widthFactor: 0.9,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.1,
+                left: MediaQuery.of(context).size.width * 0.05,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                     height: 320,
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1, bottom: 20, top: 20),
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05, bottom: 20, top: 20),
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.1),

@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
           child: Column(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -47,7 +47,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
               const SizedBox(height: 10),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: Stack(
                   alignment: Alignment.topCenter,
                   clipBehavior: Clip.none,
