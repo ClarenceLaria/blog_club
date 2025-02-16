@@ -1,51 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:blog_club/custom_widgets/my_posts.dart';
 
-class MenuPage extends StatefulWidget {
-  const MenuPage({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<MenuPage> createState() {
-    return _MenuPageState();
+  State<ProfilePage> createState() {
+    return _ProfilePageState();
   }
 }
 
-class _MenuPageState extends State<MenuPage> {
-  _MenuPageState();
+class _ProfilePageState extends State<ProfilePage> {
+  _ProfilePageState();
 
   int activeIndex = 0;
   
   @override
   Widget build (BuildContext context){
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 223, 229, 236),
+        elevation: 0,
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: 21,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: null, 
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.more_horiz,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
       backgroundColor: const Color.fromARGB(255,223,229,236),
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
           child: Column(
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Profile',
-                      style: TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {}, 
-                      icon: const Icon(
-                        Icons.more_horiz,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Stack(
@@ -222,7 +222,7 @@ class _MenuPageState extends State<MenuPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 45),
               const MyPost(),
             ],
           ),

@@ -1,7 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:blog_club/pages/articles.dart';
 
-class MyPost extends StatelessWidget {
+class MyPost extends StatefulWidget {
   const MyPost({super.key});
+
+  @override
+  State<MyPost> createState() => _MyPostState();
+}
+
+class _MyPostState extends State<MyPost> {
+  _MyPostState();
+
+  List<Map<String, dynamic>> articles = [];
+
+  Future<void> loadArticles() async {
+  try {
+    final box = Hive.box('userBox');
+    List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+    print('Retrieved articles: $storedArticles'); 
+
+    setState(() {
+      articles = storedArticles.map((item) => Map<String, dynamic>.from(item)).toList();
+    });
+  } catch (e, stacktrace) {
+    print("Error loading articles: $e");
+    print(stacktrace);
+  }
+}
+
+  String formatTimeAgo(String? createdAt) {
+    if (createdAt == null) return "Unknown time";
+
+    DateTime createdTime = DateTime.parse(createdAt);
+    Duration difference = DateTime.now().difference(createdTime);
+
+    if (difference.inDays >= 8) {
+      return DateFormat('dd/MM/yyyy').format(createdTime);
+    } else if (difference.inDays >= 1) {
+      return "${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago";
+    } else if (difference.inHours >= 1) {
+      return "${difference.inHours} hr${difference.inHours > 1 ? 's' : ''} ago";
+    } else if (difference.inMinutes >= 1) {
+      return "${difference.inMinutes} min${difference.inMinutes > 1 ? 's' : ''} ago";
+    } else {
+      return "just now";
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadArticles();
+    });
+  }
 
   @override
   Widget build (BuildContext context){
@@ -38,200 +93,126 @@ class MyPost extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: const Image(
-                            image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
-                            height: 150,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 20,),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'BIG DATA',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(237,56,106,255),
-                                  fontWeight: FontWeight.w500,
-                                ),
+            articles.isEmpty 
+              ? const Center(child: Text("No saved articles"))
+              : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      final article = articles[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Articles(article: article),
+                            ),
+                          );
+                        },
+                      child: Card(
+                        child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        child: Row(
+                          children: [
+                            article['imagePath'] != null && File(article['imagePath']).existsSync() ?
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.file(
+                                File(article['imagePath']),
+                                height: 150,
+                                width: 100,
+                                fit: BoxFit.cover,
                               ),
-                              const SizedBox(height: 10,),
-                              const Text(
-                                'Why Big Data Needs Thick Data?',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ) 
+                            : const Icon(Icons.image_not_supported, size: 50),
+                            const SizedBox(width: 10,),
+                            Expanded(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.thumb_up_alt_outlined,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      const Text(
-                                        '2.1k',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
+                                  Text(
+                                    article['category'] ?? "No Category",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color.fromARGB(255,56,106,237),
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.timelapse_outlined,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      const Text(
-                                        '1hr ago',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
+                                  const SizedBox(height: 10,),
+                                  Text(
+                                    article['title'] ?? "No Title",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
                                   ),
+                                  const SizedBox(height: 10,),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          size: 18,
-                                          Icons.bookmark_border_outlined,
-                                          color: Color.fromARGB(237,56,106,255),
-                                        ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              size: 18,
+                                            ),
+                                          ),
+                                          const Text(
+                                            '2.1k',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              Icons.timelapse_outlined,
+                                              size: 18,
+                                            ),
+                                          ),
+                                          Text(
+                                            formatTimeAgo(article['createdAt']),
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {}, 
+                                            icon: const Icon(
+                                              size: 18,
+                                              Icons.bookmark_border_outlined,
+                                              color: Color.fromARGB(237,56,106,255),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: const Image(
-                            image: AssetImage('assets/images/on_boarding_images/technology_vr.jpg'),
-                            height: 150,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 20,),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'BIG DATA',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(237,56,106,255),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 10,),
-                              const Text(
-                                'Why Big Data Needs Thick Data?',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.thumb_up_alt_outlined,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      const Text(
-                                        '2.1k',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          Icons.timelapse_outlined,
-                                          size: 18,
-                                        ),
-                                      ),
-                                      const Text(
-                                        '1hr ago',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {}, 
-                                        icon: const Icon(
-                                          size: 18,
-                                          Icons.bookmark_border_outlined,
-                                          color: Color.fromARGB(237,56,106,255),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ],

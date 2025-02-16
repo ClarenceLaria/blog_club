@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:blog_club/pages/home.dart';
 import 'package:blog_club/pages/articles.dart';
 import 'package:blog_club/pages/add_page.dart';
-import 'package:blog_club/pages/menu_page.dart';
+import 'package:blog_club/pages/profile_page.dart';
 
 class NavigationBarWidget extends StatefulWidget {
   const NavigationBarWidget({super.key});
@@ -24,7 +24,7 @@ class _NavigationBarState extends State<NavigationBarWidget> {
     const Center(child: HomePage()),
     const Center(child: Articles(article: {},)),
     const Center(child: AddPage()),
-    const Center(child: MenuPage()),
+    const Center(child: ProfilePage()),
     const Center(child: SettingsPage()),
   ];
   
