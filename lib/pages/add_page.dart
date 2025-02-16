@@ -107,103 +107,101 @@ class _AddPageState extends State<AddPage> {
           alignment: Alignment.center,
           child: FractionallySizedBox(
             widthFactor: 0.9,
-            child: Expanded(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'New Article',
-                        style: TextStyle(
-                          fontSize: 21,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: saveData, 
-                        icon: const Icon(
-                          Icons.save_alt,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: _titleController,
-                            decoration: InputDecoration(
-                              labelText: 'Title',
-                              hintText: 'Enter a Blog Title',
-                              // border: OutlineInputBorder(),
-                              suffix: IconButton(
-                                onPressed: pickImage, 
-                                icon: const Icon(Icons.image),
-                              ),
-                            ),
-                            maxLength: 100,
-                            maxLines: null,
-                          ),
-                          const SizedBox(height: 10),
-                          //Image
-                          _image != null
-                            ? Image.file(_image!, height: 150, width: 150,) // Displays the selected image
-                            : const Text("No image selected"),
-                          const SizedBox(height: 10),
-                          DropdownButtonFormField(
-                            items: items, 
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedCategory = value!;
-                              });
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Category',
-                              hintText: 'Select a Category',
-                              // border: OutlineInputBorder(),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          QuillSimpleToolbar(
-                            controller: _controller,
-                            configurations: QuillSimpleToolbarConfigurations(
-                              decoration: BoxDecoration(
-                                // color:  const Color.fromARGB(255,15, 23, 42),
-                                border: Border.all(color: Colors.black, width: 1.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              // buttonOptions: const QuillSimpleToolbarButtonOptions(
-                              //   base: QuillToolbarBaseButtonOptions(
-                              //     iconTheme: QuillIconTheme(iconButtonSelectedData: IconButtonData(color: Colors.white), iconButtonUnselectedData: IconButtonData(color: Colors.white)),
-                              //   ),
-                              // ),
-                              toolbarIconAlignment: WrapAlignment.start,
-                              toolbarIconCrossAlignment: WrapCrossAlignment.start,
-                              toolbarSectionSpacing: kToolbarSectionSpacing/20,
-                              multiRowsDisplay: false,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 400,
-                            decoration: const BoxDecoration(
-                              border: Border(top: BorderSide(color: Colors.black26, width: 2.0)),
-                            ),
-                            child: QuillEditor.basic(
-                              controller: _controller,
-                              // focusNode: FocusNode(),
-                              configurations: const QuillEditorConfigurations(),
-                            ),
-                          ),
-                        ],
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'New Article',
+                      style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  )
-                ],
-              ),
+                    IconButton(
+                      onPressed: saveData, 
+                      icon: const Icon(
+                        Icons.save_alt,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _titleController,
+                          decoration: InputDecoration(
+                            labelText: 'Title',
+                            hintText: 'Enter a Blog Title',
+                            // border: OutlineInputBorder(),
+                            suffix: IconButton(
+                              onPressed: pickImage, 
+                              icon: const Icon(Icons.image),
+                            ),
+                          ),
+                          maxLength: 100,
+                          maxLines: null,
+                        ),
+                        const SizedBox(height: 10),
+                        //Image
+                        _image != null
+                          ? Image.file(_image!, height: 150, width: 150,) // Displays the selected image
+                          : const Text("No image selected"),
+                        const SizedBox(height: 10),
+                        DropdownButtonFormField(
+                          items: items, 
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = value!;
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Category',
+                            hintText: 'Select a Category',
+                            // border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        QuillSimpleToolbar(
+                          controller: _controller,
+                          configurations: QuillSimpleToolbarConfigurations(
+                            decoration: BoxDecoration(
+                              // color:  const Color.fromARGB(255,15, 23, 42),
+                              border: Border.all(color: Colors.black, width: 1.0),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            // buttonOptions: const QuillSimpleToolbarButtonOptions(
+                            //   base: QuillToolbarBaseButtonOptions(
+                            //     iconTheme: QuillIconTheme(iconButtonSelectedData: IconButtonData(color: Colors.white), iconButtonUnselectedData: IconButtonData(color: Colors.white)),
+                            //   ),
+                            // ),
+                            toolbarIconAlignment: WrapAlignment.start,
+                            toolbarIconCrossAlignment: WrapCrossAlignment.start,
+                            toolbarSectionSpacing: kToolbarSectionSpacing/20,
+                            multiRowsDisplay: false,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 400,
+                          decoration: const BoxDecoration(
+                            border: Border(top: BorderSide(color: Colors.black26, width: 2.0)),
+                          ),
+                          child: QuillEditor.basic(
+                            controller: _controller,
+                            // focusNode: FocusNode(),
+                            configurations: const QuillEditorConfigurations(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
