@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:blog_club/pages/articles.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class LatestNews extends StatefulWidget{
   const LatestNews({super.key});
@@ -58,6 +59,30 @@ class _LatestNewsState extends State<LatestNews> {
     });
   }
 
+  Future<void> deleteArticle(String articleId, BuildContext context, int index) async {
+    var box = Hive.box('userBox'); // Open Hive box
+    List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+
+    storedArticles.removeWhere((article) => article['id'] == articleId);
+    await box.put('articles', storedArticles);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Article deleted successfully")),
+    );
+    
+    setState(() {
+        articles.removeAt(index);
+    });
+  }
+
+  Function onEdit() {
+    return (int index) {
+      setState(() {
+        articles.removeAt(index);
+      });
+    };
+  }
+
   @override
   Widget build(BuildContext context){
     return Container(
@@ -97,54 +122,55 @@ class _LatestNewsState extends State<LatestNews> {
                   itemBuilder: (context, index) {
                     final article = articles[index];
 
-                  return Dismissible(
-                    key: Key(article['id'].toString()),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      alignment: Alignment.centerRight,
-                      color: Colors.redAccent,
-                      // child: Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     ElevatedButton.icon(
-                      //       onPressed: () {},
-                      //       icon: const Icon(Icons.edit, color: Colors.white),
-                      //       label: const Text('Edit'),
-                      //       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                      //     ),
-                      //     const SizedBox(width: 10),
-                      //     ElevatedButton.icon(
-                      //       onPressed: () {},
-                      //       icon: const Icon(Icons.delete, color: Colors.white),
-                      //       label: const Text('Delete'),
-                      //       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      //     ),
-                      //   ],
-                      // ),
+                  return Slidable(
+                    key: ValueKey(article['id']),
+                    endActionPane: ActionPane(
+                      motion: const BehindMotion(),
+                      extentRatio: 0.6,
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) => onEdit()(index),
+                          icon: Icons.edit,
+                          backgroundColor: const Color.fromARGB(255,56,106,237),
+                          foregroundColor: Colors.white,
+                          label: 'Edit',
+                        ),
+                        SlidableAction(
+                          onPressed: (context) async {
+                            bool confirmDelete = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Confirm Delete"),
+                                  content: const Text("Are you sure you want to delete this article?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(false), // Cancel
+                                      child: const Text("Cancel"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(true); // Confirm Delete
+                                        deleteArticle(article['id'].toString(), context, index);
+                                      },
+                                      child: const Text("Delete", style: TextStyle(color: Colors.red)),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (confirmDelete) {
+                              await deleteArticle(article['id'].toString(), context, index);
+                            }
+                          },
+                          icon: Icons.delete,
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          label: 'Delete',
+                        ),
+                      ],
                     ),
-                    confirmDismiss: (direction) async {
-                      if (direction == DismissDirection.endToStart) {
-                        return await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Confirm Action"),
-                            content: const Text("What action do you want to take on this article?"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const Text("Edit"),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: const Text("Delete"),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return false;
-                    },
                     child: GestureDetector(
                       onTap: () {
                           Navigator.push(
