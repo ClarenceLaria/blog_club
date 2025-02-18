@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _AddPageState extends State<AddPage> {
     List<dynamic> storedArticles = List.from(box.get('articles', defaultValue: []));
 
     String title = _titleController.text;
-    String description = _controller.document.toPlainText();
+    String description = jsonEncode(_controller.document.toDelta().toJson());
     String category = _selectedCategory ?? 'No Category';
     String imagePath = _image != null ? await saveImage(_image!) : '';
 

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
@@ -15,9 +17,10 @@ class Articles extends StatefulWidget {
 class _ArticlesState extends State<Articles> {
   String title = '';
   String createdAt = '';
-  String description = '';
+  String descriptionJson = '';
   String category = '';
   String? imagePath;
+  QuillController _controller = QuillController.basic();
 
   @override
   void initState() {
@@ -42,9 +45,12 @@ class _ArticlesState extends State<Articles> {
     setState(() {
       title = widget.article['title'] ?? box.get('title', defaultValue: 'No Title');
       createdAt = formatDate(widget.article['createdAt'] ?? box.get('createdAt', defaultValue: 'Unknown Date'));
-      description = widget.article['description'] ?? box.get('description', defaultValue: 'No Description');
       category = widget.article['category'] ?? box.get('category', defaultValue: 'No Category');
       imagePath = widget.article['imagePath'] ?? box.get('imagePath');
+      // description = widget.article['description'] ?? box.get('description', defaultValue: 'No Description');
+      descriptionJson = widget.article['description'] ?? box.get('description', defaultValue: 'No Description');
+        Document doc = Document.fromJson(jsonDecode(descriptionJson));
+        _controller = QuillController(document: doc, selection: const TextSelection.collapsed(offset: 0), readOnly: true);
     });
   }
 
@@ -186,12 +192,16 @@ class _ArticlesState extends State<Articles> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Text(
-                            description,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              height: 1.5,
-                            ),
+                          // Text(
+                          //   descriptionJson,
+                          //   style: const TextStyle(
+                          //     fontSize: 14,
+                          //     height: 1.5,
+                          //   ),
+                          // ),
+                          QuillEditor.basic(
+                            controller: _controller,
+                            configurations: const QuillEditorConfigurations(checkBoxReadOnly: true), // Read-only mode for viewing
                           ),
                         ],
                       ),
