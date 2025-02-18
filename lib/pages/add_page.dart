@@ -9,8 +9,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
-  const AddPage({super.key});
+  const AddPage({super.key, this.article});
 
+  final Map<String, dynamic>? article;
+  
   @override
   State<AddPage> createState() {
     return _AddPageState();
@@ -26,12 +28,28 @@ class _AddPageState extends State<AddPage> {
     DropdownMenuItem(value: 'Category3', child: Text('Category3')),
   ];
 
-  var uuid = Uuid();
+  var uuid = const Uuid();
 
   final QuillController _controller = QuillController.basic();
   final TextEditingController _titleController = TextEditingController();
   File? _image;
   String? _selectedCategory;
+  String? _articleId;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.article != null) {
+      _articleId = widget.article!['id'];
+      _titleController.text = widget.article!['title'];
+      _controller.document = Document()..insert(0, widget.article!['description']);
+      _selectedCategory = widget.article!['category'];
+
+      if (widget.article!['imagePath'] != null) {
+        _image = File(widget.article!['imagePath']);
+      }
+    }
+  }
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -78,25 +96,40 @@ class _AddPageState extends State<AddPage> {
     final box = Hive.box('userBox');
     List<dynamic> storedArticles = List.from(box.get('articles', defaultValue: []));
 
-    String id = uuid.v4();
     String title = _titleController.text;
     String description = _controller.document.toPlainText();
     String category = _selectedCategory ?? 'No Category';
     String imagePath = _image != null ? await saveImage(_image!) : '';
 
-    storedArticles.add({
-      'id': id,
-      'createdAt': DateTime.now().toIso8601String(),
-      'title': title,
-      'description': description,
-      'category': category,
-      'imagePath': imagePath,
-    });
+    if(_articleId == null) {
+      _articleId = uuid.v4();
+      storedArticles.add({
+        'id': _articleId,
+        'createdAt': DateTime.now().toIso8601String(),
+        'title': title,
+        'description': description,
+        'category': category,
+        'imagePath': imagePath,
+      });
+    } else {
+      int index = storedArticles.indexWhere((article) => article['id'] == _articleId);
+      if (index != -1) {
+        storedArticles[index] = {
+          'id': _articleId,
+          'createdAt': storedArticles[index]['createdAt'],
+          'title': title,
+          'description': description,
+          'category': category,
+          'imagePath': imagePath,
+        };
+      }
+    }
     await box.put('articles', storedArticles);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Data Saved Successfully')),
     );
+    Navigator.pop(context);
   }
 
   @override
@@ -112,9 +145,9 @@ class _AddPageState extends State<AddPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'New Article',
-                      style: TextStyle(
+                    Text(
+                      _articleId == null ? 'New Article' : 'Edit Article',
+                      style: const TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.w600,
                       ),

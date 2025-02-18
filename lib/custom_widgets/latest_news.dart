@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:blog_club/pages/articles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:blog_club/pages/add_page.dart';
 
 class LatestNews extends StatefulWidget{
   const LatestNews({super.key});
@@ -69,18 +70,10 @@ class _LatestNewsState extends State<LatestNews> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Article deleted successfully")),
     );
-    
+
     setState(() {
         articles.removeAt(index);
     });
-  }
-
-  Function onEdit() {
-    return (int index) {
-      setState(() {
-        articles.removeAt(index);
-      });
-    };
   }
 
   @override
@@ -129,7 +122,14 @@ class _LatestNewsState extends State<LatestNews> {
                       extentRatio: 0.6,
                       children: [
                         SlidableAction(
-                          onPressed: (context) => onEdit()(index),
+                          onPressed: (context) {
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(
+                                builder: (context) => AddPage(article: article,),
+                              )
+                            );
+                          },
                           icon: Icons.edit,
                           backgroundColor: const Color.fromARGB(255,56,106,237),
                           foregroundColor: Colors.white,
