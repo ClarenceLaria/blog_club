@@ -277,10 +277,10 @@ class _LatestNewsState extends State<LatestNews> {
                             ),
                           ],
                         ),
-                                        ),
                       ),
                     ),
-                  );
+                  ),
+                );
               },
             ),
           ],

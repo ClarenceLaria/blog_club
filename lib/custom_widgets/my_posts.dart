@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:blog_club/pages/articles.dart';
+import 'package:blog_club/pages/add_page.dart';
 
 class MyPost extends StatefulWidget {
   const MyPost({super.key});
@@ -58,6 +60,22 @@ class _MyPostState extends State<MyPost> {
     });
   }
 
+  Future<void> deleteArticle(String articleId, BuildContext context, int index) async {
+    var box = Hive.box('userBox'); // Open Hive box
+    List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+
+    storedArticles.removeWhere((article) => article['id'] == articleId);
+    await box.put('articles', storedArticles);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Article deleted successfully")),
+    );
+
+    setState(() {
+        articles.removeAt(index);
+    });
+  }
+
   @override
   Widget build (BuildContext context){
     return Container(
@@ -103,115 +121,172 @@ class _MyPostState extends State<MyPost> {
                     itemBuilder: (context, index) {
                       final article = articles[index];
 
-                    return GestureDetector(
-                      onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Articles(article: article),
-                            ),
-                          );
-                        },
-                      child: Card(
-                        child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            article['imagePath'] != null && File(article['imagePath']).existsSync() ?
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.file(
-                                File(article['imagePath']),
-                                height: 150,
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ) 
-                            : const Icon(Icons.image_not_supported, size: 50),
-                            const SizedBox(width: 10,),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    article['category'] ?? "No Category",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromARGB(255,56,106,237),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10,),
-                                  Text(
-                                    article['title'] ?? "No Title",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {}, 
-                                            icon: const Icon(
-                                              Icons.thumb_up_alt_outlined,
-                                              size: 18,
-                                            ),
-                                          ),
-                                          const Text(
-                                            '2.1k',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                            ),
-                                          )
-                                        ],
+                    return Slidable(
+                      key: ValueKey(article['id']),
+                      endActionPane: ActionPane(
+                        motion: const BehindMotion(),
+                        extentRatio: 0.6,
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              Navigator.push(
+                                context, 
+                                MaterialPageRoute(
+                                  builder: (context) => AddPage(article: article,),
+                                )
+                              );
+                            },
+                            icon: Icons.edit,
+                            backgroundColor: const Color.fromARGB(255,56,106,237),
+                            foregroundColor: Colors.white,
+                            label: 'Edit',
+                          ),
+                          SlidableAction(
+                            onPressed: (context) async {
+                              bool confirmDelete = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text("Confirm Delete"),
+                                    content: const Text("Are you sure you want to delete this article?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(false), // Cancel
+                                        child: const Text("Cancel"),
                                       ),
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {}, 
-                                            icon: const Icon(
-                                              Icons.timelapse_outlined,
-                                              size: 18,
-                                            ),
-                                          ),
-                                          Text(
-                                            formatTimeAgo(article['createdAt']),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {}, 
-                                            icon: const Icon(
-                                              size: 18,
-                                              Icons.bookmark_border_outlined,
-                                              color: Color.fromARGB(255,56, 106, 237),
-                                            ),
-                                          ),
-                                        ],
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(true); // Confirm Delete
+                                          deleteArticle(article['id'].toString(), context, index);
+                                        },
+                                        child: const Text("Delete", style: TextStyle(color: Colors.red)),
                                       ),
                                     ],
-                                  ),
-                                ],
+                                  );
+                                },
+                              );
+
+                              if (confirmDelete) {
+                                await deleteArticle(article['id'].toString(), context, index);
+                              }
+                            },
+                            icon: Icons.delete,
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Articles(article: article),
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                        child: Card(
+                          child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                          child: Row(
+                            children: [
+                              article['imagePath'] != null && File(article['imagePath']).existsSync() ?
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.file(
+                                  File(article['imagePath']),
+                                  height: 150,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ) 
+                              : const Icon(Icons.image_not_supported, size: 50),
+                              const SizedBox(width: 10,),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      article['category'] ?? "No Category",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color.fromARGB(255,56,106,237),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10,),
+                                    Text(
+                                      article['title'] ?? "No Title",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {}, 
+                                              icon: const Icon(
+                                                Icons.thumb_up_alt_outlined,
+                                                size: 18,
+                                              ),
+                                            ),
+                                            const Text(
+                                              '2.1k',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {}, 
+                                              icon: const Icon(
+                                                Icons.timelapse_outlined,
+                                                size: 18,
+                                              ),
+                                            ),
+                                            Text(
+                                              formatTimeAgo(article['createdAt']),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {}, 
+                                              icon: const Icon(
+                                                size: 18,
+                                                Icons.bookmark_border_outlined,
+                                                color: Color.fromARGB(255,56, 106, 237),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                                        ),
+                    );
                 },
               ),
             ),
