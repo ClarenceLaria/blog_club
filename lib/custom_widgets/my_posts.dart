@@ -122,7 +122,7 @@ class _MyPostState extends State<MyPost> {
                       final article = articles[index];
 
                     return Slidable(
-                      key: ValueKey(article['id']),
+                      key: ValueKey(article['id'] ?? "unknown_$index"),
                       endActionPane: ActionPane(
                         motion: const BehindMotion(),
                         extentRatio: 0.6,
