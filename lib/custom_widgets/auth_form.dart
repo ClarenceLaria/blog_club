@@ -154,9 +154,10 @@ List<Widget> _buildLoginFields(void Function() togglePasswordVisibility, bool pa
       width: double.infinity,
       child: TextButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context, 
             MaterialPageRoute(builder: (context) => const NavigationBarWidget()),
+            (Route<dynamic> route) => false,
           );
         },
         style: TextButton.styleFrom(

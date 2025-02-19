@@ -101,7 +101,7 @@ class _LatestNewsState extends State<LatestNews> {
                   ),
                   child: const Text(
                     'More',
-                    style: TextStyle(fontSize: 14, color: Color.fromARGB(237,56,106,255)),
+                    style: TextStyle(fontSize: 14, color: Color.fromARGB(255,56, 106, 237)),
                   ),
                 ),
               ],
@@ -265,7 +265,7 @@ class _LatestNewsState extends State<LatestNews> {
                                             icon: const Icon(
                                               size: 18,
                                               Icons.bookmark_border_outlined,
-                                              color: Color.fromARGB(237,56,106,255),
+                                              color: Color.fromARGB(255,56, 106, 237),
                                             ),
                                           ),
                                         ],

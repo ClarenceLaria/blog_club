@@ -144,14 +144,14 @@ class _ArticlesState extends State<Articles> {
                               onPressed: () {},
                               icon: const Icon(
                                 Icons.share,
-                                color: Color.fromARGB(233, 56, 106, 255),
+                                color: Color.fromARGB(255,56, 106, 237),
                               ),
                             ),
                             IconButton(
                               onPressed: () {},
                               icon: const Icon(
                                 Icons.bookmark_border,
-                                color: Color.fromARGB(233, 56, 106, 255),
+                                color: Color.fromARGB(255,56, 106, 237),
                               ),
                             ),
                           ],
