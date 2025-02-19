@@ -43,7 +43,20 @@ class _AddPageState extends State<AddPage> {
     if (widget.article != null) {
       _articleId = widget.article!['id'];
       _titleController.text = widget.article!['title'];
-      _controller.document = Document()..insert(0, widget.article!['description']);
+      // _controller.document = Document()..insert(0, widget.article!['description']);
+
+      try {
+        if (widget.article!['description'] != null) {
+          List<dynamic> deltaJson = jsonDecode(widget.article!['description']);
+          _controller.document = Document.fromJson(deltaJson);
+        } else {
+          _controller.document = Document(); // Use an empty document if null
+        }
+      } catch (e) {
+        print("Error parsing JSON: $e");
+        _controller.document = Document(); // Prevent crash
+      }
+
       _selectedCategory = widget.article!['category'];
 
       if (widget.article!['imagePath'] != null) {
