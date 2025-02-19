@@ -116,7 +116,7 @@ class _LatestNewsState extends State<LatestNews> {
                     final article = articles[index];
 
                   return Slidable(
-                    key: ValueKey(article['id'] ?? "unknown_$index"),
+                    key: ValueKey(article['id']),
                     endActionPane: ActionPane(
                       motion: const BehindMotion(),
                       extentRatio: 0.6,
