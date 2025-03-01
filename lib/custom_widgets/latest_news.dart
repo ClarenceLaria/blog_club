@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:blog_club/pages/articles.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:blog_club/pages/add_page.dart';
+import 'package:blog_club/api/api_service.dart';
 
 class LatestNews extends StatefulWidget{
   const LatestNews({super.key});
@@ -16,22 +17,33 @@ class LatestNews extends StatefulWidget{
 class _LatestNewsState extends State<LatestNews> {
   _LatestNewsState();
 
-  List<Map<String, dynamic>> articles = [];
+  List<dynamic> articles = [];
 
-  Future<void> loadArticles() async {
-  try {
-    final box = Hive.box('userBox');
-    List<dynamic> storedArticles = box.get('articles', defaultValue: []);
-    print('Retrieved articles: $storedArticles'); 
+//   Future<void> loadArticles() async {
+//   try {
+//     final box = Hive.box('userBox');
+//     List<dynamic> storedArticles = box.get('articles', defaultValue: []);
+//     print('Retrieved articles: $storedArticles'); 
 
+//     setState(() {
+//       articles = storedArticles.map((item) => Map<String, dynamic>.from(item)).toList();
+//     });
+//   } catch (e, stacktrace) {
+//     print("Error loading articles: $e");
+//     print(stacktrace);
+//   }
+// }
+  
+  Future<void> fetchArticles() async {
+    try{
+    final fetchedPosts = await ApiService.getPosts();
     setState(() {
-      articles = storedArticles.map((item) => Map<String, dynamic>.from(item)).toList();
+      articles = fetchedPosts;
     });
-  } catch (e, stacktrace) {
+  } catch (e) {
     print("Error loading articles: $e");
-    print(stacktrace);
   }
-}
+  }
 
   String formatTimeAgo(String? createdAt) {
     if (createdAt == null) return "Unknown time";
@@ -56,7 +68,7 @@ class _LatestNewsState extends State<LatestNews> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      loadArticles();
+      fetchArticles();
     });
   }
 
