@@ -214,7 +214,7 @@ class _LatestNewsState extends State<LatestNews> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    article['category'] ?? "No Category",
+                                    article['catSlug'] ?? "No Category",
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Color.fromARGB(255,56,106,237),
